@@ -1,5 +1,6 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/bitbtmup/public_html/
+    - export DEPLOYPATH=/home/example/public_html/
+    - /bin/cp -R * $DEPLOYPATH
     - /bin/cp * $DEPLOYPATH
