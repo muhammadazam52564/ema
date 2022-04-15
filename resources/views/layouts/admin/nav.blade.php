@@ -4,27 +4,47 @@
     </div>
     <ul class="list-unstyled components">
         <p>Admin Dashboard</p>
-        <li>
+        <li class="{{ Request::is('admin/dashboard') ? 'li-active':'' }}">
             <a href="{{ route('admin.dashboard') }}">Dashboard</a>
         </li>
         <li>
             <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Menu</a>
-            <ul class="collapse list-unstyled" id="homeSubmenu">
+            <ul class="collapse list-unstyled {{ Request::is('admin/categories') || Request::is('admin/add-category') || Request::is('admin/product') || Request::is('admin/add-product')   ? 'show':'' }}"  id="homeSubmenu">
                 <li>
-                    <a href="{{ route('admin.categories') }}">Menu Categories</a>
+                    <a
+                        href="{{ route('admin.categories') }}"
+                        class="{{ Request::is('admin/categories') ? 'li-active':'' }}"
+                    >
+                        Menu Categories
+                    </a>
                 </li>
                 <li>
-                    <a href="{{ route('admin.add-category') }}">Add Categories</a>
+                    <a
+                        href="{{ route('admin.add-category') }}"
+                        class="{{ Request::is('admin/add-category') ? 'li-active':'' }}"
+                    >
+                        Add Categories
+                    </a>
                 </li>
                 <li>
-                    <a href="{{ route('admin.product') }}">Menu Products</a>
+                    <a
+                        href="{{ route('admin.product') }}"
+                        class="{{ Request::is('admin/product') ? 'li-active':'' }}"
+                    >
+                        Menu Products
+                    </a>
                 </li>
                 <li>
-                    <a href="{{ route('admin.add-product') }}">Add Products</a>
+                    <a
+                        href="{{ route('admin.add-product') }}"
+                        class="{{ Request::is('admin/add-product') ? 'li-active':'' }}"
+                    >
+                        Add Products
+                    </a>
                 </li>
             </ul>
         </li>
-        <li>
+        <li class="{{ Request::is('admin/orders') ? 'li-active':'' }}">
             <a href="{{ route('admin.orders') }}">Orders</a>
         </li>
         <!-- <li>
@@ -37,9 +57,14 @@
 
         <li>
             <a href="#customersMenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Customers</a>
-            <ul class="collapse list-unstyled" id="customersMenu">
+            <ul class="collapse list-unstyled {{ Request::is('admin/customers')  ? 'show':'' }}" id="customersMenu">
                 <li>
-                    <a href="{{ route('admin.customers') }}">Customers List</a>
+                    <a
+                        href="{{ route('admin.customers') }}"
+                        class="{{ Request::is('admin/customers') ? 'li-active':'' }}"
+                    >
+                        Customers List
+                    </a>
                 </li>
                 <!-- <li>
                     <a href="{{ route('admin.customers') }}">Customers Review</a>
@@ -48,21 +73,30 @@
         </li>
         <li>
             <a href="#managerMenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Managers</a>
-            <ul class="collapse list-unstyled" id="managerMenu">
+            <ul class="collapse list-unstyled {{ Request::is('admin/managers') || Request::is('admin/add-manager') ? 'show':'' }}" id="managerMenu">
                 <li>
-                    <a href="{{ route('admin.managers') }}">Managers List</a>
+                    <a
+                        class="{{ Request::is('admin/managers') ? 'li-active':'' }}"
+                        href="{{ route('admin.managers') }}">Managers List</a>
                 </li>
                 <li>
-                    <a href="{{ route('admin.add-manager') }}">Add New Manager</a>
+                    <a
+                        class="{{ Request::is('admin/add-manager') ? 'li-active':'' }}"
+                        href="{{ route('admin.add-manager') }}">Add New Manager</a>
                 </li>
             </ul>
         </li>
 
         <li>
             <a href="#RidersMenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Riders</a>
-            <ul class="collapse list-unstyled" id="RidersMenu">
+            <ul class="collapse list-unstyled {{ Request::is('admin/riders') ? 'show':'' }}" id="RidersMenu">
                 <li>
-                    <a href="{{ route('admin.riders') }}">Riders List</a>
+                    <a
+                        href="{{ route('admin.riders') }}"
+                        class="{{ Request::is('admin/riders') ? 'li-active':'' }}"
+                    >
+                        Riders List
+                    </a>
                 </li>
                 <!-- <li>
                     <a href="{{ route('admin.riders') }}">Add New Rider</a>
@@ -71,12 +105,16 @@
         </li>
         <li>
             <a href="#ProfileSettings" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Profile Settings</a>
-            <ul class="collapse list-unstyled" id="ProfileSettings">
+            <ul class="collapse list-unstyled {{ Request::is('admin/change-email') || Request::is('admin/change-password')  ? 'show':'' }}"  id="ProfileSettings">
                 <li>
-                    <a href="{{ route('admin.change-password') }}">Change Password</a>
+                    <a
+                        class="{{ Request::is('admin/change-password') ? 'li-active':'' }}"
+                        href="{{ route('admin.change-password') }}">Change Password</a>
                 </li>
                 <li>
-                    <a href="{{ route('admin.change-email') }}">Change Email</a>
+                    <a
+                        class="{{ Request::is('admin/change-email') ? 'li-active':'' }}"
+                        href="{{ route('admin.change-email') }}">Change Email</a>
                 </li>
             </ul>
         </li>

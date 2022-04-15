@@ -4,7 +4,7 @@
     $i = 1;
 @endphp
 <div class="container">
-    <div class="row">
+    <div class="row p-3 bg-white shadow">
     <div class="col-md-12 py-2 pb-3 d-flex justify-content-between">
         <h3>Categories</h3>
         <a href="{{ route('admin.add-category') }}" class="btn btn-success" >

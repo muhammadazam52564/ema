@@ -4,11 +4,11 @@
  $i =1;
 @endphp
 <div class="container">
-    <div class="row">
-    <div class="col-md-12 py-2 pb-3 d-flex justify-content-between">
-        <h3>Managers</h3>
-        <h1> -> {{Session::get('msg')}}  </h1>
-    </div>
+    <div class="row p-3 bg-white shadow rounded">
+        <div class="col-md-12 py-2 pb-3 d-flex justify-content-between">
+            <h3>Managers</h3>
+            <h1> -> {{Session::get('msg')}}  </h1>
+        </div>
         <div class="col-md-12 overflow-auto">
             <table class="table" style="min-width: 700px">
                 <thead class="thead-light">

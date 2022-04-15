@@ -50,7 +50,7 @@ class AdminController extends Controller
             $user->email = $request->email;
             if($user->save())
             {
-                return Redirect::back()->with('msg', 'Password updated Successfully');
+                return Redirect::back()->with('msg', 'Email updated Successfully');
             }
 
 

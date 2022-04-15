@@ -1,12 +1,12 @@
 @extends('layouts.admin.app')
 @section('content')
 <div class="container">
-    <div class="row">
+    <div class="row p-md-5 bg-white shadow rounded">
     <div class="col-md-12 py-2 pb-3 d-flex justify-content-between">
         <h3>Change Admin Password</h3>
     </div>
         <div class="col-md-12 overflow-auto">
-            <form class="form-group pt-3" method="POST" action="{{ route('admin.change-password') }}">
+            <form class="form-group p-3" method="POST" action="{{ route('admin.change-password') }}">
                 @csrf
                 <label class="mt-3"> Current Password </label>
                 <input type="password" name="curr__password" class="form-control" placeholder="Current password" />

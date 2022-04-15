@@ -86,6 +86,10 @@
                 color: #7386D5;
                 background: #fff;
             }
+            .li-active {
+                color: #7386D5;
+                background: #fff;
+            }
             #sidebar ul li.active>a,
             a[aria-expanded="true"] {
                 color: #fff;
@@ -153,13 +157,13 @@
             }
             /* width */
             ::-webkit-scrollbar {
-                width: 5px;
+                width: 0px;
                 height:2px;
             }
 
             /* Track */
             ::-webkit-scrollbar-track {
-                background: transparent;
+                background: #fff;
             }
 
             /* Handle */
