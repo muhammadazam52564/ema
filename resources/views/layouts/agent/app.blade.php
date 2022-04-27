@@ -13,6 +13,10 @@
                 font-family: 'Poppins', sans-serif;
                 background: #fafafa;
             }
+            .li-active {
+                color: #7386D5;
+                background: #fff;
+            }
             p {
                 font-family: 'Poppins', sans-serif;
                 font-size: 1.1em;

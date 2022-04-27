@@ -1,7 +1,7 @@
 @extends('layouts.admin.app')
 @section('content')
 <div class="container">
-    <div class="row p-3 bg-white shadow rounded">
+    <div class="row p-3 mb-4 bg-white shadow rounded">
     <div class="col-md-12 p-3 px-md-3">
             <div class="px-2">
                 <div class="p-2 pr-3 d-flex justify-content-between">

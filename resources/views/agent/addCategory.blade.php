@@ -1,7 +1,7 @@
 @extends('layouts.agent.app')
 @section('content')
 <div class="container">
-    <div class="row">
+    <div class="row p-3 mb-4  shadow rounded">
     <div class="col-md-12 py-2 pb-3 d-flex justify-content-between">
         <h3>Add New Category</h3>
         <a href="{{ route('admin.categories') }}" class="btn btn-success" >

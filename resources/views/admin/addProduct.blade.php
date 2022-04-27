@@ -1,7 +1,7 @@
 @extends('layouts.admin.app')
 @section('content')
 <div class="container">
-    <div class="row p-3 bg-white shadow">
+    <div class="row p-3 mb-4 bg-white shadow">
         <div class="col-md-12 py-2 pb-3 d-flex justify-content-between">
             <h3>Add Product</h3>
         </div>

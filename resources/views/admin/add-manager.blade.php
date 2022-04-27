@@ -1,13 +1,13 @@
 @extends('layouts.admin.app')
 @section('content')
 <div class="container">
-    <div class="row p-3 bg-white shadow">
-    <div class="col-md-12 py-2 pb-3 d-flex justify-content-between">
-        <h3>Add New Manager</h3>
-        <a href="{{ route('admin.managers') }}" class="btn btn-success" >
-            All Managers
-        </a>
-    </div>
+    <div class="row p-3 bg-white shadow mb-4 ">
+        <div class="col-md-12 py-2 pb-3 d-flex justify-content-between">
+            <h3>Add New Manager</h3>
+            <a href="{{ route('admin.managers') }}" class="btn btn-success" >
+                All Managers
+            </a>
+        </div>
         <div class="col-md-12 overflow-auto">
             <form class="form-group pt-3" method="POST" action="{{ route('admin.add-manager') }}">
                 @csrf

@@ -157,7 +157,7 @@
             }
             /* width */
             ::-webkit-scrollbar {
-                width: 0px;
+                width: 6px;
                 height:2px;
             }
 

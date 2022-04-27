@@ -22,7 +22,9 @@
     <style>
         .cover{
             height:100vh;
-            background-image: url('images/bgc.png');
+            background-image: url('images/background.jpeg');
+            background-repeat: no-repeat;
+            background-size: cover;
         }
         .login{
             width: 450px;

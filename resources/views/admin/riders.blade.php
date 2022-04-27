@@ -4,7 +4,7 @@
 $i = 1;
 @endphp
 <div class="container">
-    <div class="row p-3 bg-white shadow rounded">
+    <div class="row p-3 mb-4 bg-white shadow rounded">
     <div class="col-md-12 py-2 pb-3 d-flex justify-content-between">
         <h3>Riders</h3>
     </div>
