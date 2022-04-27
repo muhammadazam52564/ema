@@ -1,6 +1,6 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/teamffcd/public_html/
+    - export DEPLOYPATH=/home/teamffcd/ema.eaterymobileapps.com/
     - /bin/cp -R * $DEPLOYPATH
     - /bin/cp * $DEPLOYPATH
