@@ -22,9 +22,6 @@
     <style>
         .cover{
             height:100vh;
-            background-image: url('images/background.jpeg');
-            background-repeat: no-repeat;
-            background-size: cover;
         }
         .login{
             width: 450px;
@@ -43,9 +40,10 @@
             min-height: 100px;
             margin-top: -47px;
             padding: 75px 30px 60px 30px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
         }
         .title{
-            background-color: #7386D5;;
+            background-image: linear-gradient(to right, #f35d7c, #ff9075);
             width: 100px;
             height: 100px;
             font-size: 40px;
@@ -56,9 +54,47 @@
             height: 40px;
         }
         .login-btn, .login-btn:hover {
-            background-color: #7386D5;
+            background-image: linear-gradient(to right, #f35d7c, #ff9075);
             color: #fff;
             font-weight: bold;
+        }
+        @media screen and (max-width: 480px) {
+
+            .cover{
+                background-color: #fff;
+            }
+            .login{
+                width: 100%;
+                padding: 10px 20px;
+                position: absolute;
+            }
+            .header{
+                height: 100px;
+                z-index: 90;
+            }
+
+            .form{
+                min-height: 100px;
+                margin-top: -47px;
+                padding: 75px 30px 60px 30px;
+                box-shadow: none;
+            }
+            .title{
+                background-image: linear-gradient(to right, #f35d7c, #ff9075);
+                width: 100px;
+                height: 100px;
+                font-size: 40px;
+                color: #fff;
+            }
+            .form-control{
+                border-radius: 50px;
+                height: 40px;
+            }
+            .login-btn, .login-btn:hover {
+                background-image: linear-gradient(to right, #f35d7c, #ff9075);
+                color: #fff;
+                font-weight: bold;
+            }
         }
     </style>
 </head>
@@ -75,7 +111,7 @@
                     </div>
                     <form method="POST" action="{{ route('login') }}" class="w-100">
                         @csrf
-                        <div class="form col-md-12  shadow bg-white rounded">
+                        <div class="form col-md-12 bg-white rounded">
                             <div class="d-flex justify-content-center">
                                 <h4>Login to Your Account</h4>
                             </div>
