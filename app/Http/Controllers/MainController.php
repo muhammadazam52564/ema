@@ -107,8 +107,11 @@ class MainController extends Controller
                         $images = $request->file;
                         foreach ($images as $image)
                         {
-                            $img_path =  $image->move('product_images/', time().'.'.$image->getClientOriginalExtension());
-                            // return $img_path;
+                            // $img_path =  $image->move('product_images/', time().'.'.$image->getClientOriginalExtension());
+                            $newfilename = time() .'.'. $image->getClientOriginalExtension();
+                            $image->move(public_path("product_images"), $newfilename);
+                            $img_path = 'product_images/'.$newfilename;
+
                             $image = new ProductImage;
                             $image->image = $img_path;
                             $image->product_id = $product->id;
