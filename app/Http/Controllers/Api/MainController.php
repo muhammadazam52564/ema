@@ -18,10 +18,10 @@ class MainController extends Controller
             $categories = Category::select('id', 'name')->get();
             foreach ($categories as $category)
             {
-                $products = Product::where('category_id', $category->id)->where('parent', null)->select('id','name', 'quantity', 'price', 'description')->get();
-                foreach ($products as $product) {
-                    $product->images = ProductImage::where('product_id', $product->id)->select('image')->get();
-                }
+                $products = Product::with('images')->where('category_id', $category->id)->where('parent', null)->select('id','name', 'quantity', 'price', 'description')->get();
+                // foreach ($products as $product) {
+                //     $product->images = ProductImage::where('product_id', $product->id)->select('image')->get();
+                // }
                 $category->products = $products;
 
             }
