@@ -1,12 +1,12 @@
-@extends('layouts.admin.app')
+@extends('layouts.sadmin.app')
 @section('content')
 <div class="container">
     <div class="row p-md-5 bg-white shadow rounded m-md-4">
         <div class="col-md-12 py-2 pb-3 d-flex justify-content-between">
-            <h3>Change Admin Email Address</h3>
+            <h4>Change Admin Email Address</h4>
         </div>
         <div class="col-md-12 overflow-auto">
-            <form class="form-group p-3" method="POST" action="{{ route('admin.change-email') }}">
+            <form class="form-group p-3" method="POST" action="{{ route('sadmin.change-email') }}">
                 @csrf
                 <label class="mt-3"> Email Address </label>
                 <input type="email" name="email" class="form-control" placeholder="email address" />

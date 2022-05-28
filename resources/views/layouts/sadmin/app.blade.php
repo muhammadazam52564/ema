@@ -183,7 +183,7 @@
     <body>
         <div class="wrapper" >
             <!-- Sidebar  -->
-            @include('layouts.admin.nav')
+            @include('layouts.sadmin.nav')
             <!-- Page Content  -->
             <div id="content" class="container-fluid">
                 <div class="row px-0">

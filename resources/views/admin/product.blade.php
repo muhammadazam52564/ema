@@ -1,12 +1,20 @@
 @extends('layouts.admin.app')
+@section('title')
+    Prodcuts
+@endsection
 @section('content')
 <div class="container">
-    <div class="row p-3 mb-4 bg-white shadow rounded">
+    <div class="row p-3 m-md-4 bg-white shadow rounded">
     <div class="col-md-12 p-3 px-md-3">
             <div class="px-2">
                 <div class="p-2 pr-3 d-flex justify-content-between">
                     <div>
-                        <h3> Products List </h3>
+                        <h3> Products List</h3>
+                    </div>
+                    <div>
+                        <a href="{{ route('admin.add-products', $id) }}" class="btn btn-success"> 
+                            <i class="fa fa-plus"></i>
+                        </a>
                     </div>
                 </div>
                 <div class="col-md-12 overflow-auto">
@@ -22,48 +30,17 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @foreach($products as $product )
                             <tr>
-                                <td>Big Smokey Burgers</td>
-                                <td><img src="https://picsum.photos/200" width="90px" height="50px" class="rounded"></td>
-                                <td>£ 1.67</td>
-                                <td>Fit Kitchen</td>
-                                <td>Halal, Vegen</td>
+                                <td>{{ $product->name }}</td>
+                                <td><img src="../../{{ $product->images[0]->image }}" width="90px" height="50px" class="rounded"></td>
+                                <td>{{ $product->price }}</td>
+                                <td>{{ $product->description }}</td>
+                                <td>{{ $product->category->name }}</td>
+
                                 <td><a href="#">View</a> | <a href="#">Remove request</a></td>
                             </tr>
-                            <!-- test -->
-                            <tr>
-                                <td>Big Smokey Burgers</td>
-                                <td><img src="https://picsum.photos/200" width="90px" height="50px" class="rounded"></td>
-                                <td>£ 1.67</td>
-                                <td>Fit Kitchen</td>
-                                <td>Halal, Vegen</td>
-                                <td><a href="#">View</a> | <a href="#">Remove request</a></td>
-                            </tr>
-                            <tr>
-                                <td>Big Smokey Burgers</td>
-                                <td><img src="https://picsum.photos/200" width="90px" height="50px" class="rounded"></td>
-                                <td>£ 1.67</td>
-                                <td>Fit Kitchen</td>
-                                <td>Halal, Vegen</td>
-                                <td><a href="#">View</a> | <a href="#">Remove request</a></td>
-                            </tr>
-                            <tr>
-                                <td>Big Smokey Burgers</td>
-                                <td><img src="https://picsum.photos/200" width="90px" height="50px" class="rounded"></td>
-                                <td>£ 1.67</td>
-                                <td>Fit Kitchen</td>
-                                <td>Halal, Vegen</td>
-                                <td><a href="#">View</a> | <a href="#">Remove request</a></td>
-                            </tr>
-                            <tr>
-                                <td>Big Smokey Burgers</td>
-                                <td><img src="https://picsum.photos/200" width="90px" height="50px" class="rounded"></td>
-                                <td>£ 1.67</td>
-                                <td>Fit Kitchen</td>
-                                <td>Halal, Vegen</td>
-                                <td><a href="#">View</a> | <a href="#">Remove request</a></td>
-                            </tr>
-                            <!--  -->
+                            @endforeach
                         </tbody>
                     </table>
                 </div>

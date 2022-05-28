@@ -30,7 +30,11 @@ class LoginController extends Controller
      */
     protected $redirectTo = RouteServiceProvider::HOME;
     protected function redirectTo(){
-        if (Auth()->user()->role == 1) {
+        if (Auth()->user()->role == 0) {
+
+            return route('sadmin.dashboard');
+        }
+        else if (Auth()->user()->role == 1) {
 
             return route('admin.dashboard');
 
@@ -68,7 +72,11 @@ class LoginController extends Controller
         ]);
         if (auth()->attempt(array('email'=> $request->email, 'password'=>$request->password)))
         {
-            if (auth()->user()->role == 1) {
+            if (auth()->user()->role == 0) {
+
+                return redirect()->route('sadmin.dashboard');
+
+            }else if (auth()->user()->role == 1) {
 
                 return redirect()->route('admin.dashboard');
 

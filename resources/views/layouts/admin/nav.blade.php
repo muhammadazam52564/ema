@@ -1,49 +1,17 @@
 <nav id="sidebar" class="sticky-top">
     <div class="sidebar-header">
         <h3>Resturant Logo</h3>
+
     </div>
     <ul class="list-unstyled components">
         <p>Admin Dashboard</p>
         <li class="{{ Request::is('admin/dashboard') ? 'li-active':'' }}">
             <a href="{{ route('admin.dashboard') }}">Dashboard</a>
         </li>
-        <li>
-            <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Menu</a>
-            <ul class="collapse list-unstyled {{ Request::is('admin/categories') || Request::is('admin/add-category') || Request::is('admin/product') || Request::is('admin/add-product')   ? 'show':'' }}"  id="homeSubmenu">
-                <li>
-                    <a
-                        href="{{ route('admin.categories') }}"
-                        class="{{ Request::is('admin/categories') ? 'li-active':'' }}"
-                    >
-                        Menu Categories
-                    </a>
-                </li>
-                <li>
-                    <a
-                        href="{{ route('admin.add-category') }}"
-                        class="{{ Request::is('admin/add-category') ? 'li-active':'' }}"
-                    >
-                        Add Categories
-                    </a>
-                </li>
-                <li>
-                    <a
-                        href="{{ route('admin.product') }}"
-                        class="{{ Request::is('admin/product') ? 'li-active':'' }}"
-                    >
-                        Menu Products
-                    </a>
-                </li>
-                <li>
-                    <a
-                        href="{{ route('admin.add-product') }}"
-                        class="{{ Request::is('admin/add-product') ? 'li-active':'' }}"
-                    >
-                        Add Products
-                    </a>
-                </li>
-            </ul>
+        <li class="{{ Request::is('admin/categories') || Request::is('admin/add-category') || Request::is('admin/product/*') || Request::is('admin/add-products/*') ? 'li-active':'' }}">
+            <a href="{{ route('admin.categories') }}">Menu</a>
         </li>
+
         <li class="{{ Request::is('admin/orders') ? 'li-active':'' }}">
             <a href="{{ route('admin.orders') }}">Orders</a>
         </li>

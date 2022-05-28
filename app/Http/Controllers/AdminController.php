@@ -1,23 +1,28 @@
 <?php
-
 namespace App\Http\Controllers;
-use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Auth;
-use URL;
-use Carbon\Carbon;
+use Illuminate\Http\Request;
+use App\Models\Order;
 use App\Models\User;
-use Hash;
+use Carbon\Carbon;
 use Redirect;
+use Hash;
+use URL;
 
 class AdminController extends Controller
 {
     public function index()
     {
-        return view('admin.dashboard');
+        $all        = Order::count();
+        $pending    = Order::where('status', 'pending')->count();
+        $ongoing    = Order::where('status', 'ongoing')->count();
+        $completed  = Order::where('status', 'completed')->count();
+        $canceled   = Order::where('status', 'canceled')->count();
+        return view('admin.dashboard', compact('all', 'pending', 'ongoing', 'completed', 'canceled'));
     }
 
     public function change_password(Request $request)
@@ -56,7 +61,4 @@ class AdminController extends Controller
 
         }
     }
-
-
-
 }

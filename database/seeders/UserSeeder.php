@@ -14,8 +14,30 @@ class UserSeeder extends Seeder
      */
     public function run(){
         User::create([
-            'name'      => 'Muhammad Azam',
+            'name'      => 'Super Admin',
             'email'     => 'muhammadazam52564@gmail.com',
+            'password'  => bcrypt('123456'),
+            'email_verified_at' => Carbon::now(),
+            'role'      => 0
+        ]);
+
+        User::create([
+            'name'      => 'Johar town branch',
+            'email'     => 'branch1@gmail.com',
+            'password'  => bcrypt('123456'),
+            'email_verified_at' => Carbon::now(),
+            'role'      => 1
+        ]);
+        User::create([
+            'name'      => 'wapda town branch',
+            'email'     => 'branch2@gmail.com',
+            'password'  => bcrypt('123456'),
+            'email_verified_at' => Carbon::now(),
+            'role'      => 1
+        ]);
+        User::create([
+            'name'      => 'DHA Branch',
+            'email'     => 'branch3@gmail.com',
             'password'  => bcrypt('123456'),
             'email_verified_at' => Carbon::now(),
             'role'      => 1
@@ -23,23 +45,23 @@ class UserSeeder extends Seeder
         for ($i=0; $i < 5 ; $i++)
         {
             User::create([
-                'name'      => 'Muhammad Azam',
-                'email'     => 'muhammadazam2'.$i.'@gmail.com',
+                'name'      => 'user',
+                'email'     => 'user'.$i.'@gmail.com',
                 'password'  => bcrypt('123456'),
                 'email_verified_at' => Carbon::now(),
                 'role'      => 2
             ]);
             User::create([
-                'name'      => 'Muhammad Azam',
-                'email'     => 'muhammadazam3'.$i.'@gmail.com',
+                'name'      => 'user',
+                'email'     => 'user0'.$i.'@gmail.com',
                 'password'  => bcrypt('123456'),
                 'email_verified_at' => Carbon::now(),
                 'role'      => 3
             ]);
 
             User::create([
-                'name'      => 'Muhammad Azam',
-                'email'     => 'muhammadazam4'.$i.'@gmail.com',
+                'name'      => 'rider',
+                'email'     => 'user00'.$i.'@gmail.com',
                 'password'  => bcrypt('123456'),
                 'email_verified_at' => Carbon::now(),
                 'role'      => 4

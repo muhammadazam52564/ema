@@ -60,13 +60,16 @@ class MainController extends Controller
     //
     //  Product Funtions
     //
-    public function products(){
-        return Auth::user()->role == 1 ?  view('admin.product'): view('agent.product');
+    public function products($id){
+        $products = Product::with('images')->where('category_id', $id)->where('parent', null )->get();
+        $compacts = compact('products', 'id');
+        // return $products;
+        return Auth::user()->role == 1 ?  view('admin.product', $compacts): view('agent.product', $compacts);
     }
 
-    public function addProduct(){
-        $categories = Category::all();
-        $compacts = compact('categories');
+    public function addProduct($id){
+        $category = Category::find($id);
+        $compacts = compact('category');
         return Auth::user()->role == 1 ?  view('admin.addProduct', $compacts): view('agent.addProduct', $compacts);
     }
 
@@ -173,7 +176,6 @@ class MainController extends Controller
     //
     //  orders  Funtions
     //
-
     public function orders()
     {
         return Auth::user()->role == 1 ?  view('admin.orders'): view('agent.orders');

@@ -1,4 +1,5 @@
 <?php
+use App\Http\Controllers\SuperAdminController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AgentController;
 use App\Http\Controllers\UserController;
@@ -6,7 +7,6 @@ use App\Http\Controllers\RiderController;
 use App\Http\Controllers\MainController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-
 Route::get('/', function () {
     return view('welcome');
 });
@@ -14,6 +14,44 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::group(['prefix'=> 'sadmin', 'middleware'=>['IsSuperAdmin', 'auth', 'PreventBackHistory']], function()
+{
+    Route::get('/dashboard', [SuperAdminController::class, 'index'])->name('sadmin.dashboard');
+    Route::get('/branches', [SuperAdminController::class, 'branches'])->name('sadmin.branches');
+    Route::get('/add-branch', [SuperAdminController::class, 'add_branch'])->name('sadmin.add-branch');
+    Route::post('/add-branch', [SuperAdminController::class, 'save_branch'])->name('sadmin.add-branch');
+    Route::get('/del-branch/{id}', [SuperAdminController::class, 'del_branch'])->name('sadmin.del-branch');
+    Route::get('/block-branch/{id}/{status}', [SuperAdminController::class, 'block_branch'])->name('admin.block-branch');
+    Route::get('/change-password', [SuperAdminController::class, 'change_password'])->name('sadmin.change-password');
+    Route::post('/change-password', [SuperAdminController::class, 'update_password'])->name('sadmin.change-password');
+    Route::get('/change-email', [SuperAdminController::class, 'change_email'])->name('sadmin.change-email');
+    Route::post('/change-email', [SuperAdminController::class, 'update_email'])->name('sadmin.change-email');
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -23,16 +61,16 @@ Route::group(['prefix'=> 'admin', 'middleware'=>['isAdmin', 'auth', 'PreventBack
     //
     // Product & Categories
     //
-    Route::get('/categories', [MainController::class, 'category'])->name('admin.categories');
-    Route::get('/edit-category/{id}', [MainController::class, 'editCategory'])->name('admin.edit-category');
-    Route::get('/delete-category/{id}', [MainController::class, 'deleteCategory'])->name('admin.delete-category');
-    Route::get('/add-category', [MainController::class, 'addCategory'])->name('admin.add-category');
-    Route::post('/add-category', [MainController::class, 'addNewCategory'])->name('admin.add-category');
+    Route::get('/categories',           [MainController::class, 'category']         )->name('admin.categories');
+    Route::get('/edit-category/{id}',   [MainController::class, 'editCategory']     )->name('admin.edit-category');
+    Route::get('/delete-category/{id}', [MainController::class, 'deleteCategory']   )->name('admin.delete-category');
+    Route::get('/add-category',    [MainController::class, 'addCategory']      )->name('admin.add-category');
+    Route::post('/add-category',        [MainController::class, 'addNewCategory']   )->name('admin.add-category');
 
 
-    Route::get('/product', [MainController::class, 'products'])->name('admin.product');
-    Route::get('/add-product', [MainController::class, 'addProduct'])->name('admin.add-product');
-    Route::post('/add-product', [MainController::class, 'addNewProduct'])->name('admin.add-product');
+    Route::get('/product/{id}',         [MainController::class, 'products']         )->name('admin.product');
+    Route::get('/add-products/{id}',     [MainController::class, 'addProduct']       )->name('admin.add-products');
+    Route::post('/add-product',         [MainController::class, 'addNewProduct']    )->name('admin.add-product');
 
 
     // Resturant Orders
@@ -79,6 +117,24 @@ Route::group(['prefix'=> 'admin', 'middleware'=>['isAdmin', 'auth', 'PreventBack
 
 
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -138,6 +194,22 @@ Route::group(['prefix'=> 'agent', 'middleware'=>['isAgent', 'auth', 'PreventBack
     Route::post('/change-email', [AgentController::class, 'update_email'])->name('agent.change-email');
 
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

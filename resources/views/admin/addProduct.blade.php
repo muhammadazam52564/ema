@@ -1,7 +1,7 @@
 @extends('layouts.admin.app')
 @section('content')
 <div class="container">
-    <div class="row p-3 mb-4 bg-white shadow">
+    <div class="row p-3 m-md-4 bg-white shadow ">
         <div class="col-md-12 py-2 pb-3 d-flex justify-content-between">
             <h3>Add Product</h3>
         </div>
@@ -28,9 +28,7 @@
                         <div class="form-group">
                             <label for="category">Category</label>
                             <select name="product_category" class="form-control">
-                                @foreach($categories as $categorie)
-                                    <option value='{{$categorie->id}}'> {{ $categorie->name }} </option>
-                                @endforeach
+                                    <option value='{{$category->id}}'> {{ $category->name }} </option>
                             </select>
                         </div>
                         <div class="d-flex">
@@ -84,9 +82,7 @@
                         <div class="form-group">
                             <label for="category">Category</label>
                             <select name="product_category" class="form-control">
-                                @foreach($categories as $categorie)
-                                    <option value='{{$categorie->id}}'> {{ $categorie->name }} </option>
-                                @endforeach
+                                <option value='{{$category->id}}'> {{ $category->name }} </option>
                             </select>
                         </div>
                         <div class="form-group">

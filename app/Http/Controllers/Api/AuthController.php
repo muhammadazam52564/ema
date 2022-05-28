@@ -52,6 +52,7 @@ class AuthController extends Controller
             ], 400);
         }
     }
+
     public function login(Request $request)
     {
         try
@@ -111,6 +112,7 @@ class AuthController extends Controller
             ], 400);
         }
     }
+
     public function update_profile_image(Request $request)
     {
         try{
@@ -172,6 +174,7 @@ class AuthController extends Controller
             ], 400);
         }
     }
+
     public function update_profile(Request $request)
     {
         try{
@@ -230,6 +233,7 @@ class AuthController extends Controller
             ], 400);
         }
     }
+
     public function change_password(Request $request)
     {
         try{
@@ -279,6 +283,7 @@ class AuthController extends Controller
             ], 400);
         }
     }
+
     public function forgot_password(Request $request){
         try{
             $validator = \Validator::make($request->all(), [
@@ -322,6 +327,7 @@ class AuthController extends Controller
             ], 200);
         }
     }
+    
     public function verify_code(Request $request){
         try{
             $validator = \Validator::make($request->all(), [
@@ -366,6 +372,7 @@ class AuthController extends Controller
             }
         }
     }
+
     public function set_password(Request $request){
         try{
             $validator = \Validator::make($request->all(), [
@@ -408,15 +415,16 @@ class AuthController extends Controller
             }
         }
     }
+
     public function add_address(Request $request)
     {
         try{
             $validator = \Validator::make($request->all(), [
                 'user_id'   => 'required',
                 'title'     => 'required',
-                'city'      => 'required',
-                'area'      => 'required',
                 'street'    => 'required',
+                'lat'       => 'required',
+                'lang'      => 'required',
             ]);
             if ($validator->fails()) {
                 return response()->json([
@@ -425,42 +433,64 @@ class AuthController extends Controller
                     'data'      => null
                 ], 400);
             }
-            $user = User::find($request->user_id);
-            if(empty($user))
-            {
-                return response()->json([
-                    'status' => 400,
-                    'message' => 'user does not exists!',
-                    'data' => null,
-                ], 200);
-            }else{
-                $add = new Address;
-                $add->user_id   = $request->user_id ;
-                $add->title     = $request->title ;
-                $add->city      = $request->city ;
-                $add->area      = $request->area ;
-                $add->street    = $request->street ;
-                if($add->save()){
+            else{
+
+                $user = User::find($request->user_id);
+                if(empty($user))
+                {
                     return response()->json([
-                        'status' => 200,
-                        'message' => 'Address Added Successfully',
+                        'status' => 400,
+                        'message' => 'user does not exists!',
                         'data' => null,
                     ], 200);
+                }else{
+                    $add = new Address;
+                    $add->user_id   = $request->user_id;
+                    $add->title     = $request->title;
+                    $add->street    = $request->street;
+                    $add->lat       = $request->lat;
+                    $add->lang      = $request->lang;
+                    if($add->save()){
+                        return response()->json([
+                            'status'    => 200,
+                            'message'   => 'Address Added Successfully ',
+                            'data'      => null,
+                        ], 200);
+                    }
                 }
             }
-
         }catch(\Exception $e)
         {
-            if($request->expectsJson)
-            {
-                return response()->json([
-                    'status' => 400,
-                    'error' => $e->getMessage(),
-                    'data'  => null
-                ], 400);
-            }
+            return response()->json([
+                'status'    => 400,
+                'error'     => $e->getMessage(),
+                'data'      => null
+            ], 400);
         }
     }
+
+    public function address($id)
+    {
+        try
+        {
+            $address = Address::where('user_id', $id)->get();
+
+            return response()->json([
+                'status'    => true,
+                'message'   => 'address list',
+                'error'     => $address,
+            ], 200);
+
+        } catch(\Exception $e)
+        {
+            return response()->json([
+                'status'    => false,
+                'error'     => $e->getMessage(),
+                'data'      => null
+            ], 400);
+        }
+    }
+
     public function signout(Request $request)
     {
         try{
