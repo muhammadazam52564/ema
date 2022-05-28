@@ -41,11 +41,10 @@ class MainController extends Controller
         }
     }
 
-
     public function product($id)
     {
         try{
-            $product = Product::where('id', $id)->select('id', 'name', 'quantity', 'price', 'description', 'type')->first();
+            $product = Product::with('images')->where('id', $id)->select('id', 'name', 'quantity', 'price', 'description', 'type')->first();
             if ($product->type == 'vp')
             {
                 $product->sub_products = Product::where('parent', $product->id)
@@ -56,7 +55,7 @@ class MainController extends Controller
             return response()->json([
                 'status'    => true,
                 'message'   => 'Product details',
-                'data'      => $product->makeHidden(['updated_at', 'created_at']),
+                'data'      => $product,
             ], 200);
 
         } catch(\Exception $e){
