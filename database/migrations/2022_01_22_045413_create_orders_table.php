@@ -17,9 +17,14 @@ class CreateOrdersTable extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+
+            $table->unsignedBigInteger('branch_id')->nullable();
+            $table->foreign('branch_id')->references('id')->on('users')->onDelete('cascade');
+
             $table->string('status')->default('pending');
             $table->string('date')->nullable();
             $table->string('time')->nullable();
+            
             $table->unsignedBigInteger('selected_address')->nullable();
             $table->foreign('selected_address')->references('id')->on('addresses')->onDelete('cascade');
             $table->timestamps();

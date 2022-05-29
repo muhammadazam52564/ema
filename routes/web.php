@@ -73,25 +73,23 @@ Route::group(['prefix'=> 'admin', 'middleware'=>['isAdmin', 'auth', 'PreventBack
     Route::post('/add-product',         [MainController::class, 'addNewProduct']    )->name('admin.add-product');
 
 
-    // Resturant Orders
     //
-    Route::get('/orders', [MainController::class, 'orders'])->name('admin.orders');
+    // Resturant Orders
+    Route::get('/orders/{id?}', [MainController::class, 'orders'])->name('admin.orders');
 
     //
     // Resturant Sales Matrix
-    //
     Route::get('/sales', [MainController::class, 'sale'])->name('admin.sales');
     Route::get('/invoice', [MainController::class, 'invoice'])->name('admin.invoice');
+    
     //
     // Customers
-    //
     Route::get('/customers', [MainController::class, 'customers'])->name('admin.customers');
     Route::get('//del-customer/{id}', [MainController::class, 'del_customer'])->name('admin.del-customer');
     Route::get('/block-customer/{id}/{status}', [MainController::class, 'block_customer'])->name('admin.block-customer');
 
     //
     // Managers
-    //
     Route::get('/managers', [MainController::class, 'managers'])->name('admin.managers');
     Route::get('/add-manager', [MainController::class, 'add_manager'])->name('admin.add-manager');
     Route::post('/add-manager', [MainController::class, 'manager'])->name('admin.add-manager');
@@ -101,7 +99,6 @@ Route::group(['prefix'=> 'admin', 'middleware'=>['isAdmin', 'auth', 'PreventBack
 
     //
     // Riders
-    //
     Route::get('/riders', [MainController::class, 'riders'])->name('admin.riders');
     Route::get('/del-rider/{id}', [MainController::class, 'del_rider'])->name('admin.del-rider');
     Route::get('/block-rider/{id}/{status}', [MainController::class, 'block_rider'])->name('admin.block-rider');
@@ -109,7 +106,6 @@ Route::group(['prefix'=> 'admin', 'middleware'=>['isAdmin', 'auth', 'PreventBack
 
     //
     // Profile Settings
-    //
     Route::get('/change-password', [AdminController::class, 'change_password'])->name('admin.change-password');
     Route::post('/change-password', [AdminController::class, 'update_password'])->name('admin.change-password');
     Route::get('/change-email', [AdminController::class, 'change_email'])->name('admin.change-email');

@@ -26,7 +26,6 @@ class MainController extends Controller
 {
     //
     //  Category Funtions
-    //
     public function category(){
 
         $categories = Category::all();
@@ -34,6 +33,8 @@ class MainController extends Controller
         return Auth::user()->role == 1 ?  view('admin.categories', $compacts): view('agent.categories', $compacts);
     }
 
+    // 
+    // Add New Category
     public function addNewCategory(Request $request)
     {
         $category = new Category;
@@ -41,16 +42,24 @@ class MainController extends Controller
         $category->save();
         return Auth::user()->role == 1 ? redirect()->route('admin.categories'): "sorry";
     }
+
+    // 
+    // Add Category
     public function addCategory(){
         return Auth::user()->role == 1 ?  view('admin.addCategory'): view('agent.addCategory');
     }
 
+    // 
+    // Edit Category
     public function editCategory($id){
 
         $category = Category::find($id);
         $compacts = compact('category');
         return Auth::user()->role == 1 ?  view('admin.Editcategory', $compacts): view('agent.Editcategory', $compacts);
     }
+
+    // 
+    // delete Category
     public function deleteCategory($id)
     {
         $category = Category::find($id)->delete();
@@ -59,7 +68,6 @@ class MainController extends Controller
 
     //
     //  Product Funtions
-    //
     public function products($id){
         $products = Product::with('images')->where('category_id', $id)->where('parent', null )->get();
         $compacts = compact('products', 'id');
@@ -78,7 +86,7 @@ class MainController extends Controller
 
             // return $request->all();
             $validator = \Validator::make($request->all(), [
-                'product_name'          => 'required|min:1',
+                // 'product_name'          => 'required|min:1',
                 // 'product_qty'           => 'required|min:1',
                 // 'product_price'         => 'required|min:1',
                 'product_description'   => 'required|min:1',
@@ -141,8 +149,13 @@ class MainController extends Controller
                         $images = $request->file;
                         foreach ($images as $image)
                         {
-                            $img_path =  $image->move('product_images/', time().'.'.$image->getClientOriginalExtension());
+                            // $img_path =  $image->move('product_images/', time().'.'.$image->getClientOriginalExtension());
                             // return $img_path;
+
+                            $newfilename = time() .'.'. $image->getClientOriginalExtension();
+                            $image->move(public_path("product_images"), $newfilename);
+                            $img_path = 'product_images/'.$newfilename;
+
                             $image = new ProductImage;
                             $image->image = $img_path;
                             $image->product_id = $product->id;
@@ -166,6 +179,49 @@ class MainController extends Controller
                         ]  , 200);
                     }
                 }
+                if($request->type === 'gp')
+                {
+                    $products               = json_decode($request->products);
+                    $product                = new Product;
+                    $product->name          = $request->product_name;
+                    $product->price         = $request->price;
+                    $product->description   = $request->product_description;
+                    $product->category_id   = $request->product_category;
+                    $product->type          = 'gp';
+                    if ($product->save())
+                    {
+                        $images = $request->file;
+                        foreach ($images as $image)
+                        {
+                            // $img_path =  $image->move('product_images/', time().'.'.$image->getClientOriginalExtension());
+                            // return $img_path;
+
+                            $newfilename = time() .'.'. $image->getClientOriginalExtension();
+                            $image->move(public_path("product_images"), $newfilename);
+                            $img_path    = 'product_images/'.$newfilename;
+
+                            $image = new ProductImage;
+                            $image->image = $img_path;
+                            $image->product_id = $product->id;
+                            $status = $image->save();
+                        }
+                        foreach ($products as  $subproduct)
+                        {
+                            $sub_product                = new Product;
+                            $sub_product->name          = $subproduct->product;
+                            $sub_product->quantity      = $subproduct->qty;
+                            $sub_product->category_id   = $request->product_category;
+                            $sub_product->parent        = $product->id;
+                            $sub_product->save();
+                        }
+
+                        return response()->json([
+                            'status'    => 200,
+                            'message'   => 'Product Successfully Added ',
+                            'data'      => null
+                        ]  , 200);
+                    }
+                }
             }
         }catch(\Exception $e){
             return response()->json([
@@ -178,15 +234,15 @@ class MainController extends Controller
 
     //
     //  orders  Funtions
-    //
-    public function orders()
+    public function orders($id)
     {
-        return Auth::user()->role == 1 ?  view('admin.orders'): view('agent.orders');
+        $orders = Order::where('branch_id', $id)->get();
+        $compacts = compact('orders');
+        return Auth::user()->role == 1 ?  view('admin.orders', $compacts): view('agent.orders', $compacts);
     }
 
     //
     // sale Funtions
-    //
     public function sale()
     {
         return Auth::user()->role == 1 ?  view('admin.sales'): view('agent.sales');
@@ -194,7 +250,6 @@ class MainController extends Controller
 
     //
     // invoice Funtions
-    //
     public function invoice()
     {
         return Auth::user()->role == 1 ?  view('admin.invoices'): view('agent.invoices');
@@ -202,7 +257,6 @@ class MainController extends Controller
 
     //
     // customers Funtions
-    //
     public function customers()
     {
         $customers = User::where('role', '3')->get();
@@ -211,11 +265,16 @@ class MainController extends Controller
             view('admin.customers', $compacts) :
             view('agent.customers', $compacts);
     }
+    // 
+    // delete customer
     public function del_customer($id)
     {
         $customer = User::find($id)->delete();
         return Redirect::back()->with('msg', 'deleted Successfully');
     }
+
+    // 
+    // block unblock customer
     public function block_customer($id, $status)
     {
         // return $status;
@@ -226,8 +285,7 @@ class MainController extends Controller
             return Redirect::back()->with('msg', 'Blocked Successfully');
         }
     }
-    //
-    // Managers Funtions
+
     //
     // Add or Edit manager
     public function manager(Request $request)
@@ -248,6 +306,9 @@ class MainController extends Controller
             return redirect('/admin/managers');
         }
     }
+
+    // 
+    // managers
     public function managers()
     {
         $managers = User::where('role', '2')->get();
@@ -256,6 +317,8 @@ class MainController extends Controller
             view('admin.managers', $compacts) : '';
             // view('agent.managers', $compacts);
     }
+    // 
+    // edit manager
     public function edit_manager($id)
     {
         $manager = User::find($id);
@@ -264,11 +327,17 @@ class MainController extends Controller
             view('admin.editManager', $compacts) : '';
             // view('agent.editManager', $compacts);
     }
+
+    // 
+    // delete manager
     public function del_manager($id)
     {
         $customer = User::find($id)->delete();
         return Redirect::back()->with('msg', 'deleted Successfully');
     }
+
+    // 
+    // block manager
     public function block_manager($id, $status)
     {
         // return $status;
@@ -284,6 +353,8 @@ class MainController extends Controller
         }
     }
 
+    // 
+    // add_manager
     public function add_manager()
     {
         return Auth::user()->role == 1 ?  view('admin.add-manager'): view('agent.add-manager');
@@ -291,7 +362,6 @@ class MainController extends Controller
 
     //
     // Riders funtion
-    //
     public function riders()
     {
         $riders = User::where('role', '4')->get();
@@ -302,6 +372,8 @@ class MainController extends Controller
         // return Auth::user()->role == 1 ?  view('admin.riders'): view('agent.riders');
     }
 
+    // 
+    // approve rider
     public function approve_rider($id)
     {
         // return $id;
@@ -313,6 +385,8 @@ class MainController extends Controller
         }
     }
 
+    // 
+    // block rider
     public function block_rider($id, $status)
     {
         // return $status;

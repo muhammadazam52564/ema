@@ -3,7 +3,7 @@
 <div class="container">
     <div class="row p-3 m-md-4 bg-white shadow ">
         <div class="col-md-12 py-2 pb-3 d-flex justify-content-between">
-            <h3>Add Product</h3>
+            <h3>Add New Product</h3>
         </div>
         <div class="col-md-12">
             <div class="row">
@@ -43,8 +43,7 @@
                         </div>
                         <div class="form-group">
                             <label for="description">Description</label>
-                            <textarea name="product_description" type="text" id="description" class="form-control" placeholder="product description">
-                            </textarea>
+                            <textarea name="product_description" id="description" class="form-control" placeholder="product description"></textarea>
                         </div>
                         <div class=" form-group">
                             <div class="bg-white d-flex justify-content-between">
@@ -87,8 +86,7 @@
                         </div>
                         <div class="form-group">
                             <label for="description">Description</label>
-                            <textarea name="product_description" type="text" id="description" class="form-control" placeholder="product description">
-                            </textarea>
+                            <textarea name="product_description"  id="description" class="form-control" placeholder="product description"></textarea>
                         </div>
                         <div class=" form-group">
                             <div class="bg-white d-flex justify-content-between">
@@ -156,12 +154,89 @@
                     </div>
                 </div>
             </div>
+            <div class="gp add-product d-none row">
+                <div class="bg-white p-3 col-md-6">
+                    <form id="gp_form">
+                        <meta name="_token" content="{{ csrf_token() }}" />
+                        <div class="form-group">
+                            <label for="pname">Product Name</label>
+                            <input type="text" name="product_name" id="pname" class="form-control" placeholder="Product Name">
+                        </div>
+                        <div class="form-group">
+                            <label for="category">Category</label>
+                            <select name="product_category" class="form-control">
+                                <option value='{{$category->id}}'> {{ $category->name }} </option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="gp_price">Price</label>
+                            <input name="price" type="number"  id="gp_price" class="form-control" placeholder="product price">
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Description</label>
+                            <textarea name="product_description"  id="description" class="form-control" placeholder="product description"></textarea>
+                        </div>
+                        <div class=" form-group">
+                            <div class="bg-white d-flex justify-content-between">
+                                <div class="container mt-3 w-100">
+                                    <div class="w-100">
+                                        <div class="d-flex justify-content-between bg-white">
+                                            <h4>Product Images</h4>
+                                            <input type="file" id="vp_image" class="d-none" onchange="image_select(event)" multiple >
+                                            <button class="btn btn-sm btn-primary" type="button" onclick="document.getElementById('vp_image').click()">Choose Images</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-            <div class="gp add-product d-none">
-                <div class="">
-                    <h3>gp-content</h3>
+                        <div class="py-3">
+                            <div class="row">
+                                <div id="products_headings" class="col-md-12 d-none">
+                                    <div class="row mb-4">
+                                        <div class="col-md-5 col-lg-5">
+                                            <label for="">Product</label>
+                                        </div>
+                                        <div class="col-md-5 col-lg-5">
+                                            <label>Quantity</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12" id="cover__selected__products">
+                                    <!-- here display selected__ products -->
+                                </div>
+                            </div>
+                            <div class="row p-0 m-0">
+                                <div class="col-md-5 col-lg-5 p-0 px-1">
+                                    <label for="product__name">Product</label>
+                                    <input type="text" id="product__name" class="form-control" placeholder="product name">
+                                </div>
+                                <div class="col-md-5 col-lg-5 p-0 px-1">
+                                    <label for="product__qty"> Quantity </label>
+                                    <input type="number" id="product__qty" class="form-control" placeholder="456">
+                                </div>
+                                <div class="col-md-2 col-lg-2 p-0 px-1">
+                                    <label for="add_products_btn"></label><br/>
+                                    <button id="add_products_btn" type="button" class=" mt-2 btn btn-success " onclick="add_new_product()">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pt-5 d-flex justify-content-start">
+                            <button type="button" id="gp_form_submit" class="btn btn-primary"> Save Product</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-md-6 p-3">
+                    <div class="bg-white d-flex flex-wrap justify-content-start" id="gp_container">
+
+                    </div>
                 </div>
             </div>
+            <!--  -->
         </div>
     </div>
 </div>
@@ -180,6 +255,7 @@
             // this variable will store images for preview
         let images = [];
         let varients = [];
+        let products = [];
         function add_varient() {
             let varient = $('#varient').val();
             let qty = $('#v_qty').val();
@@ -214,7 +290,6 @@
                 )
             });
         }
-
         function varient_remove(index)
         {
             if (index > -1)
@@ -224,6 +299,49 @@
             dispaly_varient();
         }
 
+        function add_new_product() {
+            let product = $('#product__name').val(); 
+            let qty = $('#product__qty').val();
+            products.push({
+                product, qty
+            })
+            console.log('products', products);
+            dispaly_product();
+        }
+        function dispaly_product(){
+
+            if (products.length > 0 ) {
+                $('#cover__selected__products').html('')
+                $('#products_headings').removeClass('d-none')
+            }else{
+                $('#cover__selected__products').html('')
+                $('#products_headings').addClass('d-none')
+            }
+            products.forEach( (ele, index) => {
+                $('#cover__selected__products').append(
+                    '<div class="row mb-4">' +
+                        '<div class="col-md-4 col-lg-4">'+
+                            '<label for="varient">'+ ele.product +'</label>'+
+                        '</div>'+
+                        '<div class="col-md-3 col-lg-3">'+
+                            '<label for="varient">'+ ele.qty +'</label>'+
+                        '</div>' +
+                        '<div class="col-md-3 col-lg-2">'+
+                            '<label class="fa fa-times" style="cursor:pointer" onclick="product_remove('+ index +')"  data-index='+ index +'></label>'+
+                        '</div>'+
+                    '</div>'
+                )
+            });
+        }
+        function product_remove(index)
+        {
+            console.log('removing ', index);
+            if (index > -1)
+            {
+                products.splice(index, 1);
+            }
+            dispaly_product();
+        }
 
         // Images Preview
         function image_select(e) {
@@ -245,6 +363,7 @@
             // document.getElementById('form').reset();
             document.getElementById('container').innerHTML = image_show();
             document.getElementById('vp_container').innerHTML = image_show();
+            document.getElementById('gp_container').innerHTML = image_show();
         }
 
         // this function will show images in the DOM
@@ -259,17 +378,12 @@
             return image;
         }
 
-
-
         // this function will delete a specific Image from the container
         function delete_image(e) {
             images.splice(e, 1);
             document.getElementById('container').innerHTML = image_show();
             document.getElementById('vp_container').innerHTML = image_show();
         }
-
-
-
 
         // this function will check duplicate images
         function check_duplicate(name) {
@@ -284,6 +398,7 @@
             }
             return image;
         }
+
         // Image Reset
         function image_reset(event) {
             images = [];
@@ -324,6 +439,19 @@
             submit_form_data(formData)
         });
 
+        $('#gp_form_submit').click(function(){
+            alert('gp_form')
+            let myForm = document.getElementById('gp_form');
+            formData = new FormData(myForm);
+            formData.append("type", 'gp');
+            for (let index = 0; index < images.length; index++) {
+                formData.append("file[" + index + "]", images[index]['file']);
+            }
+            formData.append("products", JSON.stringify(products));
+            submit_form_data(formData)
+        });
+
+        
         function submit_form_data (formData) {
             alert("sending data")
             $.ajaxSetup({
@@ -343,11 +471,19 @@
                     console.log(res);
                     if(res.status === 200)
                     {
-                        console.log(' successfully send ');
+                        // let last = $(location).attr("href").split('/').pop();
+                        // console.log(' successfully send ');
+                        // window.location.href = "{{ env('APP_URL') }}/product/"+last;
                     }
                 }
             })
         }
+
+        
+        // function name() {
+        //     var name = `{{ config('app.APP_URL') }}`;
+        //     alert(name);
+        // }name();
     </script>
 @endpush
 
