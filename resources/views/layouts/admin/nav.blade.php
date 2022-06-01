@@ -13,11 +13,11 @@
         </li>
 
         <li class="{{ Request::is('admin/orders') ? 'li-active':'' }}">
-            <a href="{{ route('admin.orders', auth()->user()->id) }}">Orders</a>
+            <a href="{{ route('admin.orders') }}">Orders</a>
         </li>
-        <!-- <li>
-            <a href="{{ route('admin.sales') }}">Sales</a>
-        </li> -->
+        <li>
+            <a href="{{ route('admin.promo') }}">Promo</a>
+        </li>
 
         <!-- <li>
             <a href="{{ route('admin.invoice') }}">Invoice</a>

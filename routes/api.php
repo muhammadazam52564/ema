@@ -20,10 +20,3 @@ Route::get('/address/{id}',             [AuthController::class, 'address']);
 
 Route::get('/categories',               [MainController::class, 'categories']);
 Route::get('/product/{id}',             [MainController::class, 'product']);
-
-// Route::post('/trending',                [MainController::class, 'trending']);
-// Route::post('/search',                  [MainController::class, 'search']);
-// Route::post('/notifications',           [MainController::class, 'notifications']);
-// Route::post('/banner',                  [MainController::class, 'banner']);
-// Route::post('/order',                   [MainController::class, 'order']);
-

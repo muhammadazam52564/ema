@@ -10,7 +10,7 @@
                 <thead class="thead-light">
                     <tr>
                         <th scope="col">#</th>
-                        <th scope="col">Order Id</th>
+                        <th scope="col">Order ID</th>
                         <th scope="col">Customer Name</th>
                         <th scope="col">Time & Date</th>
                         <th scope="col">Amount</th>
@@ -19,36 +19,27 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>#RS12311</td>
-                        <td>Muhammad</td>
-                        <td>08:32 PM 28 January, 2022</td>
-                        <td> $ 20.5 </td>
-                        <td>
-                            <p class="bg-warning px-3 py-1 " style="width:fit-content">pending</p>
-                        </td>
-                        <td>
-                            <a href="{{ route('admin.invoice') }}" class="btn btn-primary">
-                                <i class="fa fa-eye"></i>
-                            </a>
-                            <a href="{{ route('admin.orders') }}" class="btn btn-primary">Accept</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>#RS12312</td>
-                        <td>Muhammad</td>
-                        <td>08:33 PM 28 January, 2022</td>
-                        <td> $ 20.5 </td>
-                        <td>
-                            <p class="bg-warning px-3 py-1 " style="width:fit-content">pending</p>
-                        </td>
-                        <td>
-                            <a href="{{ route('admin.orders') }}" class="btn btn-primary">Accept</a>
-                        </td>
-                    </tr>
-
+                    @php
+                        $i = 0;
+                    @endphp
+                    @foreach($orders as $order)
+                        <tr>
+                            <th>{{  $i++ }}</th>
+                            <td>{{ $order->id }}</td>
+                            <td>{{ $order->users->name }}</td>
+                            <td></td>
+                            <td> {{  }} </td>
+                            <td>
+                                <p class="bg-warning px-3 py-1 " style="width:fit-content">pending</p>
+                            </td>
+                            <td>
+                                <a href="{{ route('admin.invoice') }}" class="btn btn-primary">
+                                    <i class="fa fa-eye"></i>
+                                </a>
+                                <a href="{{ route('admin.orders') }}" class="btn btn-primary">Accept</a>
+                            </td>
+                        </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>

@@ -7,17 +7,19 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Auth;
-use App\Models\User;
-use App\Models\Address;
+use App\Models\ProductImage;
+use App\Models\OrderItem;
 use App\Models\Attribute;
 use App\Models\Category;
-use App\Models\Order;
-use App\Models\OrderItem;
 use App\Models\Product;
-use App\Models\ProductImage;
+use App\Models\Address;
+use App\Models\Order;
+use App\Models\Promo;
+use App\Models\User;
 use Carbon\Carbon;
 use Redirect;
 use URL;
+// Super Admin 0
 // Admin 1
 // Agent 2
 // User 3
@@ -28,42 +30,43 @@ class MainController extends Controller
     //  Category Funtions
     public function category(){
 
-        $categories = Category::all();
+        $categories = Category::where('branch_id', auth()->user()->id)->get();
         $compacts = compact('categories');
         return Auth::user()->role == 1 ?  view('admin.categories', $compacts): view('agent.categories', $compacts);
     }
-
-    // 
-    // Add New Category
-    public function addNewCategory(Request $request)
-    {
-        $category = new Category;
-        $category->name = $request->name;
-        $category->save();
-        return Auth::user()->role == 1 ? redirect()->route('admin.categories'): "sorry";
-    }
-
-    // 
-    // Add Category
-    public function addCategory(){
+    public function add_category(){
         return Auth::user()->role == 1 ?  view('admin.addCategory'): view('agent.addCategory');
     }
-
-    // 
-    // Edit Category
-    public function editCategory($id){
-
+    public function add_new_category(Request $request)
+    {
+        $validated  = $request->validate([
+            'name'  => 'required|max:255'
+        ]);
+        $category               = new Category;
+        $category->name         = $request->name;
+        $category->branch_id    = auth()->user()->id;
+        $category->save();
+        return Auth::user()->role == 1 ? redirect()->route('admin.categories')->with('msg', 'Category Added Successfully'): "sorry";
+    } 
+    public function edit_category($id){
         $category = Category::find($id);
         $compacts = compact('category');
         return Auth::user()->role == 1 ?  view('admin.Editcategory', $compacts): view('agent.Editcategory', $compacts);
     }
-
-    // 
-    // delete Category
-    public function deleteCategory($id)
+    public function update_category(Request $request, $id)
+    {
+        $validated  = $request->validate([
+            'name'  => 'required|max:255'
+        ]);
+        $category               = Category::find($id);
+        $category->name         = $request->name;
+        $category->save();
+        return Auth::user()->role == 1 ? redirect()->route('admin.categories')->with('msg', 'Category Updated Successfully'): "sorry";
+    } 
+    public function delete_category($id)
     {
         $category = Category::find($id)->delete();
-        return Redirect::back()->with('msg', 'deleted Successfully');
+        return Redirect::back()->with('msg', 'Category Deleted Successfully');
     }
 
     //
@@ -74,14 +77,12 @@ class MainController extends Controller
         // return $products;
         return Auth::user()->role == 1 ?  view('admin.product', $compacts): view('agent.product', $compacts);
     }
-
-    public function addProduct($id){
+    public function add_product($id){
         $category = Category::find($id);
         $compacts = compact('category');
         return Auth::user()->role == 1 ?  view('admin.addProduct', $compacts): view('agent.addProduct', $compacts);
     }
-
-    public function addNewProduct(Request $request){
+    public function add_new_product(Request $request){
         try{
 
             // return $request->all();
@@ -231,14 +232,80 @@ class MainController extends Controller
             ], 400);
         }
     }
+    public function remove_product($id)
+    {
+        $product = Product::find($id);
+        $product->delete();
+        return back()->with('msg', 'deleted successfully');
+        // $products = Product::where('parent')
+    }
 
     //
     //  orders  Funtions
-    public function orders($id)
+    public function orders(Request $request)
     {
-        $orders = Order::where('branch_id', $id)->get();
+        $orders = Order::with('users')->with('orderItems')->where('branch_id', auth()->user()->id)->get();
         $compacts = compact('orders');
+        return $orders;
         return Auth::user()->role == 1 ?  view('admin.orders', $compacts): view('agent.orders', $compacts);
+    }
+
+    //
+    //  Promo  Funtions
+    public function promo(Request $request)
+    {
+        $promos = Promo::where('branch_id', auth()->user()->id)->get();
+        $compacts = compact('promos');
+        return Auth::user()->role == 1 ?  view('admin.promo', $compacts): view('agent.promo', $compacts);
+    }
+    public function add_promo(){
+        return Auth::user()->role == 1 ?  view('admin.addpromo'): view('agent.addpromo');
+    }
+    public function add_new_promo(Request $request)
+    {
+        $validated = $request->validate([
+            'name'      => 'required|max:255',
+            'code'      => 'required|max:255',
+            'discount'  => 'required|max:255',
+            'expiry'    => 'required|max:255',
+        ]);
+
+        $promo = new Promo;
+        $promo->name        = $request->name;
+        $promo->code        = $request->code;
+        $promo->discount    = $request->discount;
+        $promo->expiry      = $request->expiry;
+        $promo->branch_id   = auth()->user()->id;
+        $promo->save();
+        return Auth::user()->role == 1 ? redirect()->route('admin.promo'): "sorry";
+    }
+    public function edit_promo($id){
+
+        $promo = Promo::find($id);
+        $compacts = compact('promo');
+        return Auth::user()->role == 1 ?  view('admin.editpromo', $compacts): view('agent.editpromo', $compacts);
+    }
+    public function update_promo(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'name'      => 'required|max:255',
+            'code'      => 'required|max:255',
+            'discount'  => 'required|max:255',
+            'expiry'    => 'required|max:255',
+        ]);
+
+        $promo              = Promo::find($id);
+        $promo->name        = $request->name;
+        $promo->code        = $request->code;
+        $promo->discount    = $request->discount;
+        $promo->expiry      = $request->expiry;
+        $promo->save();
+        return Auth::user()->role == 1 ? redirect()->route('admin.promo'): "sorry";
+    }
+    public function delete_promo($id)
+    {
+        $promo = Promo::find($id)->delete();
+        return Redirect::back()->with('msg', 'Ptomo deleted Successfully');
     }
 
     //
@@ -265,16 +332,11 @@ class MainController extends Controller
             view('admin.customers', $compacts) :
             view('agent.customers', $compacts);
     }
-    // 
-    // delete customer
     public function del_customer($id)
     {
         $customer = User::find($id)->delete();
         return Redirect::back()->with('msg', 'deleted Successfully');
     }
-
-    // 
-    // block unblock customer
     public function block_customer($id, $status)
     {
         // return $status;
@@ -287,7 +349,7 @@ class MainController extends Controller
     }
 
     //
-    // Add or Edit manager
+    // Manager Funtions
     public function manager(Request $request)
     {
         if ($request->has('id')){
@@ -306,9 +368,6 @@ class MainController extends Controller
             return redirect('/admin/managers');
         }
     }
-
-    // 
-    // managers
     public function managers()
     {
         $managers = User::where('role', '2')->get();
@@ -317,8 +376,6 @@ class MainController extends Controller
             view('admin.managers', $compacts) : '';
             // view('agent.managers', $compacts);
     }
-    // 
-    // edit manager
     public function edit_manager($id)
     {
         $manager = User::find($id);
@@ -327,17 +384,11 @@ class MainController extends Controller
             view('admin.editManager', $compacts) : '';
             // view('agent.editManager', $compacts);
     }
-
-    // 
-    // delete manager
     public function del_manager($id)
     {
         $customer = User::find($id)->delete();
         return Redirect::back()->with('msg', 'deleted Successfully');
     }
-
-    // 
-    // block manager
     public function block_manager($id, $status)
     {
         // return $status;
@@ -352,9 +403,6 @@ class MainController extends Controller
             }
         }
     }
-
-    // 
-    // add_manager
     public function add_manager()
     {
         return Auth::user()->role == 1 ?  view('admin.add-manager'): view('agent.add-manager');
@@ -371,9 +419,6 @@ class MainController extends Controller
             view('agent.riders', $compacts);
         // return Auth::user()->role == 1 ?  view('admin.riders'): view('agent.riders');
     }
-
-    // 
-    // approve rider
     public function approve_rider($id)
     {
         // return $id;
@@ -384,9 +429,6 @@ class MainController extends Controller
             return Redirect::back()->with('msg', 'Rider Successfully Approved');
         }
     }
-
-    // 
-    // block rider
     public function block_rider($id, $status)
     {
         // return $status;

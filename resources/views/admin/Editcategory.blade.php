@@ -9,8 +9,8 @@
         </a>
     </div>
         <div class="col-md-12 overflow-auto">
-            <form class="form-group pt-3" >
-            <input type="hidden" value="{{ $category->id }}"><br/>
+            <form class="form-group pt-3" method="post" action="{{ route('admin.update-category', $category->id) }}">
+                @csrf
                 <label> Category Name </label>
                 <input type="text" name="name" class="form-control" value="{{ $category->name }}" placeholder="Category Name" />
                 <div class="mt-4  w-100 d-flex justify-content-end">

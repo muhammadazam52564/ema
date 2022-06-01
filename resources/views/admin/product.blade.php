@@ -9,7 +9,7 @@
             <div class="px-2">
                 <div class="p-2 pr-3 d-flex justify-content-between">
                     <div>
-                        <h3> Products List</h3>
+                        <h3> Products</h3>
                     </div>
                     <div>
                         <a href="{{ route('admin.add-products', $id) }}" class="btn btn-success"> 
@@ -33,12 +33,17 @@
                             @foreach($products as $product )
                             <tr>
                                 <td>{{ $product->name }}</td>
-                                <td><img src="../../{{ $product->images[0]->image }}" width="90px" height="50px" class="rounded"></td>
+                                <td>
+                                    @if(! empty($product->images[0]))
+                                        <img src="../../{{ $product->images[0]->image }}" width="90px" height="50px" class="rounded">
+                                    @endif
+                                </td>
+                                
                                 <td>{{ $product->price }}</td>
                                 <td>{{ $product->description }}</td>
                                 <td>{{ $product->category->name }}</td>
 
-                                <td><a href="#">View</a> | <a href="#">Remove request</a></td>
+                                <td><a href="">View</a> | <a href="{{ route('admin.remove-product', $product->id) }}">Remove</a></td>
                             </tr>
                             @endforeach
                         </tbody>

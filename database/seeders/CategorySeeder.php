@@ -13,11 +13,19 @@ class CategorySeeder extends Seeder
      */
     public function run()
     {
-        for ($i=0; $i < 3; $i++) {
-            Category::create([
-                'name'          => 'category'.$i,
-                'image'         => 'category/img.png'.$i
-            ]);
-        }
+        Category::create([
+            'name'          => 'deals',
+            'branch_id'     => '2'
+        ]);
+
+        Category::create([
+            'name'          => 'pizza',
+            'branch_id'     => '2'
+        ]);
+
+        Category::create([
+            'name'          => 'burgers',
+            'branch_id'     => '2'
+        ]);
     }
 }

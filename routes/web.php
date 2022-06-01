@@ -60,56 +60,65 @@ Route::group(['prefix'=> 'admin', 'middleware'=>['isAdmin', 'auth', 'PreventBack
     Route::get('/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
     //
     // Product & Categories
-    //
-    Route::get('/categories',           [MainController::class, 'category']         )->name('admin.categories');
-    Route::get('/edit-category/{id}',   [MainController::class, 'editCategory']     )->name('admin.edit-category');
-    Route::get('/delete-category/{id}', [MainController::class, 'deleteCategory']   )->name('admin.delete-category');
-    Route::get('/add-category',    [MainController::class, 'addCategory']      )->name('admin.add-category');
-    Route::post('/add-category',        [MainController::class, 'addNewCategory']   )->name('admin.add-category');
+    Route::get('/categories',               [MainController::class, 'category']             )->name('admin.categories');
+    Route::get('/add-category',             [MainController::class, 'add_category']         )->name('admin.add-category');
+    Route::post('/add-category',            [MainController::class, 'add_new_category']     )->name('admin.add-category');
+    Route::get('/edit-category/{id}',       [MainController::class, 'edit_category']        )->name('admin.edit-category');
+    Route::post('/update-category/{id}',    [MainController::class, 'update_category']      )->name('admin.update-category');
+    Route::get('/delete-category/{id}',     [MainController::class, 'delete_category']      )->name('admin.delete-category');
 
 
     Route::get('/product/{id}',         [MainController::class, 'products']         )->name('admin.product');
-    Route::get('/add-products/{id}',     [MainController::class, 'addProduct']       )->name('admin.add-products');
-    Route::post('/add-product',         [MainController::class, 'addNewProduct']    )->name('admin.add-product');
-
+    Route::get('/add-products/{id}',    [MainController::class, 'add_product']      )->name('admin.add-products');
+    Route::post('/add-product',         [MainController::class, 'add_new_product']  )->name('admin.add-product');
+    Route::get('/remove-product/{id}',  [MainController::class, 'remove_product']   )->name('admin.remove-product');
 
     //
     // Resturant Orders
-    Route::get('/orders/{id?}', [MainController::class, 'orders'])->name('admin.orders');
+    Route::get('/orders/', [MainController::class, 'orders'])->name('admin.orders');
+
+    // 
+    // promo routes 
+    Route::get('/promo',                [MainController::class, 'promo']                )->name('admin.promo');
+    Route::get('/add-promo',            [MainController::class, 'add_promo']            )->name('admin.add-promo');
+    Route::post('/add-promo',           [MainController::class, 'add_new_promo']        )->name('admin.add-promo');
+    Route::get('/edit-promo/{id}',      [MainController::class, 'edit_promo']           )->name('admin.edit-promo');
+    Route::post('/update-promo/{id}',   [MainController::class, 'update_promo']         )->name('admin.update-promo');
+    Route::get('/delete-promo/{id}',    [MainController::class, 'delete_promo']         )->name('admin.delete-promo');
 
     //
-    // Resturant Sales Matrix
-    Route::get('/sales', [MainController::class, 'sale'])->name('admin.sales');
-    Route::get('/invoice', [MainController::class, 'invoice'])->name('admin.invoice');
+    // Sales Matrix
+    Route::get('/sales',                [MainController::class, 'sale'] )->name('admin.sales');
+    Route::get('/invoice',              [MainController::class, 'invoice'])->name('admin.invoice');
     
     //
     // Customers
-    Route::get('/customers', [MainController::class, 'customers'])->name('admin.customers');
-    Route::get('//del-customer/{id}', [MainController::class, 'del_customer'])->name('admin.del-customer');
-    Route::get('/block-customer/{id}/{status}', [MainController::class, 'block_customer'])->name('admin.block-customer');
+    Route::get('/customers',                    [MainController::class, 'customers']        )->name('admin.customers');
+    Route::get('//del-customer/{id}',           [MainController::class, 'del_customer']     )->name('admin.del-customer');
+    Route::get('/block-customer/{id}/{status}', [MainController::class, 'block_customer']   )->name('admin.block-customer');
 
     //
     // Managers
-    Route::get('/managers', [MainController::class, 'managers'])->name('admin.managers');
-    Route::get('/add-manager', [MainController::class, 'add_manager'])->name('admin.add-manager');
-    Route::post('/add-manager', [MainController::class, 'manager'])->name('admin.add-manager');
-    Route::get('/del-manager/{id}', [MainController::class, 'del_manager'])->name('admin.del-manager');
-    Route::get('/edit-manager/{id}', [MainController::class, 'edit_manager'])->name('admin.edit-manager');
-    Route::get('/block-manager/{id}/{status}', [MainController::class, 'block_manager'])->name('admin.block-manager');
+    Route::get('/managers',                     [MainController::class, 'managers']     )->name('admin.managers');
+    Route::get('/add-manager',                  [MainController::class, 'add_manager']  )->name('admin.add-manager');
+    Route::post('/add-manager',                 [MainController::class, 'manager']      )->name('admin.add-manager');
+    Route::get('/del-manager/{id}',             [MainController::class, 'del_manager']  )->name('admin.del-manager');
+    Route::get('/edit-manager/{id}',            [MainController::class, 'edit_manager'] )->name('admin.edit-manager');
+    Route::get('/block-manager/{id}/{status}',  [MainController::class, 'block_manager'])->name('admin.block-manager');
 
     //
     // Riders
-    Route::get('/riders', [MainController::class, 'riders'])->name('admin.riders');
-    Route::get('/del-rider/{id}', [MainController::class, 'del_rider'])->name('admin.del-rider');
-    Route::get('/block-rider/{id}/{status}', [MainController::class, 'block_rider'])->name('admin.block-rider');
-    Route::get('/approve-rider/{id}', [MainController::class, 'approve_rider'])->name('admin.approve-rider');
+    Route::get('/riders',                       [MainController::class, 'riders']       )->name('admin.riders');
+    Route::get('/del-rider/{id}',               [MainController::class, 'del_rider']    )->name('admin.del-rider');
+    Route::get('/block-rider/{id}/{status}',    [MainController::class, 'block_rider']  )->name('admin.block-rider');
+    Route::get('/approve-rider/{id}',           [MainController::class, 'approve_rider'])->name('admin.approve-rider');
 
     //
     // Profile Settings
-    Route::get('/change-password', [AdminController::class, 'change_password'])->name('admin.change-password');
-    Route::post('/change-password', [AdminController::class, 'update_password'])->name('admin.change-password');
-    Route::get('/change-email', [AdminController::class, 'change_email'])->name('admin.change-email');
-    Route::post('/change-email', [AdminController::class, 'update_email'])->name('admin.change-email');
+    Route::get('/change-password',  [AdminController::class, 'change_password'] )->name('admin.change-password');
+    Route::post('/change-password', [AdminController::class, 'update_password'] )->name('admin.change-password');
+    Route::get('/change-email',     [AdminController::class, 'change_email']    )->name('admin.change-email');
+    Route::post('/change-email',    [AdminController::class, 'update_email']    )->name('admin.change-email');
 
 
 });
