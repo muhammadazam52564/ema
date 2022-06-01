@@ -1,4 +1,7 @@
 @extends('layouts.admin.app')
+@section('title')
+Orders
+@endsection
 @section('content')
 <div class="container">
     <div class="row p-3 m-md-4 bg-white shadow rounded">
@@ -12,7 +15,6 @@
                         <th scope="col">#</th>
                         <th scope="col">Order ID</th>
                         <th scope="col">Customer Name</th>
-                        <th scope="col">Time & Date</th>
                         <th scope="col">Amount</th>
                         <th scope="col">Status</th>
                         <th scope="col">Actions</th>
@@ -27,16 +29,32 @@
                             <th>{{  $i++ }}</th>
                             <td>{{ $order->id }}</td>
                             <td>{{ $order->users->name }}</td>
-                            <td></td>
-                            <td> {{  }} </td>
+                            <td> {{ $order->amount }} </td>
                             <td>
-                                <p class="bg-warning px-3 py-1 " style="width:fit-content">pending</p>
+                                @if($order->status == 'pending')
+                                    <p class="bg-dark px-2 rounded text-white text-center" style="width: 100px;" >{{ $order->status }}</p>
+                                @elseif($order->status == 'canceled')
+                                    <p class="bg-danger px-2 rounded text-white text-center" style="width:100px;">{{ $order->status }}</p>
+                                @elseif($order->status == 'completed')
+                                    <p class="bg-success px-2 rounded text-white text-center" style="width:100px;">{{ $order->status }}</p>
+                                @else
+                                    <p class="bg-primary px-2 rounded text-white text-center" style="width:100px;">{{ $order->status }}</p>
+                                @endif
                             </td>
                             <td>
-                                <a href="{{ route('admin.invoice') }}" class="btn btn-primary">
+                                <a href="{{ route('admin.invoice') }}" class="btn btn-sm btn-primary">
                                     <i class="fa fa-eye"></i>
                                 </a>
-                                <a href="{{ route('admin.orders') }}" class="btn btn-primary">Accept</a>
+                                @if($order->status == 'pending')
+                                    <a href="{{ route('admin.orders') }}" class="btn btn-sm btn-success fa fa-check"></a>
+                                    <a href="{{ route('admin.orders') }}" class="btn btn-sm btn-danger fa fa-times"></a>
+                                @elseif($order->status == 'canceled')
+                                    <!-- <a href="{{ route('admin.orders') }}" class="btn btn-sm btn-primary">Accept</a> -->
+                                @elseif($order->status == 'completed')
+                                    <!-- <a href="{{ route('admin.orders') }}" class="btn btn-sm btn-primary">Accept</a> -->
+                                @else
+                                    <!-- <a href="{{ route('admin.orders') }}" class="btn btn-sm btn-primary">Accept</a> -->
+                                @endif
                             </td>
                         </tr>
                     @endforeach

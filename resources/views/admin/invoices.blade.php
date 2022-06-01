@@ -20,7 +20,7 @@
         </div>
         <div class="col-md-12 py-2 pb-3 d-flex justify-content-between">
             <table class="table">
-                <thead class="thead-dark">
+                <thead class="text-white" style="background: #6d7fcc">
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">Description</th>

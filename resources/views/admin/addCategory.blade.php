@@ -1,4 +1,7 @@
 @extends('layouts.admin.app')
+@section('title')
+Create Category
+@endsection
 @section('content')
 <div class="container">
     <div class="row p-3 mb-4 bg-white shadow m-md-4">

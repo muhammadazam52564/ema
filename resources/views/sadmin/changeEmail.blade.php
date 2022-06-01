@@ -1,4 +1,7 @@
 @extends('layouts.sadmin.app')
+@section('title')
+Settings Email
+@endsection
 @section('content')
 <div class="container">
     <div class="row p-md-5 bg-white shadow rounded m-md-4">

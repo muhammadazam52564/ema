@@ -246,7 +246,7 @@ class MainController extends Controller
     {
         $orders = Order::with('users')->with('orderItems')->where('branch_id', auth()->user()->id)->get();
         $compacts = compact('orders');
-        return $orders;
+        // return $orders;
         return Auth::user()->role == 1 ?  view('admin.orders', $compacts): view('agent.orders', $compacts);
     }
 

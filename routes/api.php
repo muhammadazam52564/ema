@@ -20,3 +20,6 @@ Route::get('/address/{id}',             [AuthController::class, 'address']);
 
 Route::get('/categories',               [MainController::class, 'categories']);
 Route::get('/product/{id}',             [MainController::class, 'product']);
+
+Route::post('/order',                   [MainController::class, 'order']);
+

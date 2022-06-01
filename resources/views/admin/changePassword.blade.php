@@ -1,4 +1,7 @@
 @extends('layouts.admin.app')
+@section('title')
+Settings Password
+@endsection
 @section('content')
 <div class="container">
     <div class="row p-md-5 bg-white shadow rounded m-md-4">

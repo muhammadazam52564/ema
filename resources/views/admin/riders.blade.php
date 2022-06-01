@@ -1,4 +1,7 @@
 @extends('layouts.admin.app')
+@section('title')
+Riders
+@endsection
 @section('content')
 @php
 $i = 1;

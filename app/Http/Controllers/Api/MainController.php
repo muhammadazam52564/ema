@@ -40,7 +40,6 @@ class MainController extends Controller
             ], 400);
         }
     }
-
     public function product($id)
     {
         try{
@@ -67,10 +66,6 @@ class MainController extends Controller
             ], 400);
         }
     }
-
-
-
-
     public function sub_categories(Request $request)
     {
         try{
@@ -101,63 +96,18 @@ class MainController extends Controller
             ], 400);
         }
     }
-
-    public function trending(Request $request)
-    {
-        try{
-            $service = Service::where('city', $request->city)->get();
-            return response()->json([
-                'status'    => true,
-                'message'     => 'service details',
-                'data'      => $service->makeHidden(['updated_at', 'created_at']),
-            ], 200);
-
-        } catch(\Exception $e){
-
-            return response()->json([
-                'status'    => false,
-                'error'     => $e->getMessage(),
-                'data'      =>  0,
-            ], 400);
-        }
-    }
-
-    public function search(Request $request)
-    {
-        try{
-            $service = Service::where('city', $request->city)->where('name', 'LIKE',"%{$request->name}%")->get();
-            return response()->json([
-                'status'    => true,
-                'message'     => 'service details',
-                'data'      => $service->makeHidden(['updated_at', 'created_at']),
-            ], 200);
-
-        } catch(\Exception $e){
-
-            return response()->json([
-                'status'    => false,
-                'error'     => $e->getMessage(),
-                'data'      =>  0,
-            ], 400);
-        }
-    }
-
-    public function notifications(Request $request)
-    {
+    public function notifications(Request $request){
         return "notifications";
     }
 
-    public function banner(Request $request)
-    {
-        return "banner";
-    }
+    // public function orders(Request $request){
+    //     return "notifications";
+    // }
 
-    public function order(Request $request)
-    {
+    public function order(Request $request){
         try{
-
             $validator = \Validator::make($request->all(), [
-                'user_id'   => 'required',
+                'user_id'       => 'required',
             ]);
             if ($validator->fails()) {
                 return response()->json([
@@ -166,24 +116,26 @@ class MainController extends Controller
                     'data'   => null
                 ], 400);
             }
-            $order = new Order;
-            $order->user_id = $request->user_id;
-            $order->date    = $request->date;
-            $order->time    = $request->time;
-            $order->selected_address    = $request->selected_address;
-
+            $amount             = 0;
+            $order              = new Order;
+            $order->user_id     = $request->user_id;
+            $order->branch_id   = $request->branch_id;
+            $order->address_id  = $request->address_id;
 
             if($order->save()){
-                foreach ($request->items as $order_items){
-                    $item = new OrderItem;
-                    $item->order_id = $order->id;
-                    $item->service_id = $order_items['service_id'];
+                foreach ($request->items as $order_item){
+                    $item               = new OrderItem;
+                    $item->order_id     = $order->id;
+                    $item->product_id   = $order_item['id'];
+                    $item->qty          = $order_item['qty'];
                     $item->save();
-                    $service = Service::find($item->service_id);
-                    $service->orders = $service->orders + 1;
-                    $service->save();
+
+                    $amount = $amount +  Product::find($order_item['id'])->first()->price * $order_item['qty'];
                 }
             }
+            $order->amount = $amount;
+            $order->save();
+
             return response()->json([
                 'status'    => true,
                 'message'   => 'Order Succesfully Submitted',

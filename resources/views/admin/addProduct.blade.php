@@ -1,4 +1,7 @@
 @extends('layouts.admin.app')
+@section('title')
+Create Product
+@endsection
 @section('content')
 <div class="container">
     <div class="row p-3 m-md-4 bg-white shadow ">
