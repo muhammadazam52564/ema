@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Auth;
+use App\Models\ManagerPermition;
 use App\Models\ProductImage;
 use App\Models\OrderItem;
 use App\Models\Attribute;
@@ -239,7 +240,6 @@ class MainController extends Controller
         return back()->with('msg', 'deleted successfully');
         // $products = Product::where('parent')
     }
-
     //
     //  orders  Funtions
     public function orders(Request $request)
@@ -307,22 +307,16 @@ class MainController extends Controller
         $promo = Promo::find($id)->delete();
         return Redirect::back()->with('msg', 'Ptomo deleted Successfully');
     }
-
-    //
     // sale Funtions
     public function sale()
     {
         return Auth::user()->role == 1 ?  view('admin.sales'): view('agent.sales');
     }
-
-    //
     // invoice Funtions
     public function invoice()
     {
         return Auth::user()->role == 1 ?  view('admin.invoices'): view('agent.invoices');
     }
-
-    //
     // customers Funtions
     public function customers()
     {
@@ -374,7 +368,6 @@ class MainController extends Controller
         $compacts = compact('managers');
         return Auth::user()->role == 1 ?
             view('admin.managers', $compacts) : '';
-            // view('agent.managers', $compacts);
     }
     public function edit_manager($id)
     {
@@ -405,7 +398,8 @@ class MainController extends Controller
     }
     public function add_manager()
     {
-        return Auth::user()->role == 1 ?  view('admin.add-manager'): view('agent.add-manager');
+        $permitions = ManagerPermition::select('id', 'name')->get();
+        return Auth::user()->role == 1 ?  view('admin.add-manager', compact('permitions')): '';
     }
 
     //

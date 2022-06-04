@@ -45,14 +45,14 @@ class UserSeeder extends Seeder
         for ($i=0; $i < 5 ; $i++)
         {
             User::create([
-                'name'      => 'user',
-                'email'     => 'user'.$i.'@gmail.com',
+                'name'      => 'manager'.$i,
+                'email'     => 'manager'.$i.'@gmail.com',
                 'password'  => bcrypt('123456'),
                 'email_verified_at' => Carbon::now(),
                 'role'      => 2
             ]);
             User::create([
-                'name'      => 'user',
+                'name'      => 'user'.$i,
                 'email'     => 'user0'.$i.'@gmail.com',
                 'password'  => bcrypt('123456'),
                 'email_verified_at' => Carbon::now(),
@@ -60,7 +60,7 @@ class UserSeeder extends Seeder
             ]);
 
             User::create([
-                'name'      => 'rider',
+                'name'      => 'rider'.$i,
                 'email'     => 'user00'.$i.'@gmail.com',
                 'password'  => bcrypt('123456'),
                 'email_verified_at' => Carbon::now(),

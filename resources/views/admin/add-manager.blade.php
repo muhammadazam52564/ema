@@ -16,12 +16,27 @@ Create Manager
                 @csrf
                 <label class="mt-3"> Manager Name </label>
                 <input type="text" name="name" class="form-control" placeholder="Manager Name" />
+                
                 <label class="mt-3"> Manager Email </label>
                 <input type="text" name="email" class="form-control" placeholder="Manager Email" />
+                
                 <label class="mt-3"> Manager Password </label>
                 <input type="password" name="password" class="form-control" placeholder="Manager Password" />
-                <div class="mt-4  w-100 d-flex justify-content-end">
 
+                <div class="py-4">
+                    <div>
+                        <b>
+                            Permitions
+                        </b>
+                    </div>
+                    <div class="px-2">
+                        @foreach($permitions as $permition)
+                            <input type="checkbox" id="permit__{{ $permition->id }}" value="{{ $permition->id }}">
+                            <label for="box__{{ $permition->id }}">{{ $permition->name }}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        @endforeach
+                    </div>
+                </div>
+                <div class="mt-4  w-100 d-flex justify-content-end">
                     <button class="btn btn-primary "> Save Manager</button>
                 </div>
             </form>
