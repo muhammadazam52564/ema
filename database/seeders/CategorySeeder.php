@@ -15,16 +15,17 @@ class CategorySeeder extends Seeder
     {
         Category::create([
             'name'          => 'deals',
+            'image'         => 'categories/1655371438.jpeg',
             'branch_id'     => '2'
         ]);
-
         Category::create([
             'name'          => 'pizza',
+            'image'         => 'categories/1655371438.jpeg',
             'branch_id'     => '2'
         ]);
-
         Category::create([
             'name'          => 'burgers',
+            'image'         => 'categories/1655371438.jpeg',
             'branch_id'     => '2'
         ]);
     }

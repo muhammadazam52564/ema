@@ -7,13 +7,20 @@ use Illuminate\Support\Facades\Auth;
 use Hash;
 use Carbon\Carbon;
 use App\Models\User;
+use App\Models\Order;
+
 use Redirect;
 
 class AgentController extends Controller
 {
     public function index()
     {
-        return view('agent.dashboard');
+        $all        = Order::count();
+        $pending    = Order::where('status', 'pending')->count();
+        $ongoing    = Order::where('status', 'ongoing')->count();
+        $completed  = Order::where('status', 'completed')->count();
+        $canceled   = Order::where('status', 'canceled')->count();
+        return view('agent.dashboard', compact('all', 'pending', 'ongoing', 'completed', 'canceled'));
     }
 
     public function change_password(Request $request)

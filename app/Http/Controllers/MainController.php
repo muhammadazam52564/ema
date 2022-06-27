@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
@@ -8,6 +7,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Auth;
 use App\Models\ManagerPermition;
+use App\Models\UserPermition;
 use App\Models\ProductImage;
 use App\Models\OrderItem;
 use App\Models\Attribute;
@@ -27,11 +27,17 @@ use URL;
 // Rider 4
 class MainController extends Controller
 {
-    //
-    //  Category Funtions
+    // Category Funtions
     public function category(){
 
-        $categories = Category::where('branch_id', auth()->user()->id)->get();
+        if (auth()->user()->role == 2) 
+        {
+            $branch_id    = auth()->user()->branch_id;
+        }
+        else{
+            $branch_id   = auth()->user()->id;
+        }
+        $categories = Category::where('branch_id', $branch_id)->get();
         $compacts = compact('categories');
         return Auth::user()->role == 1 ?  view('admin.categories', $compacts): view('agent.categories', $compacts);
     }
@@ -40,14 +46,28 @@ class MainController extends Controller
     }
     public function add_new_category(Request $request)
     {
+        // return $request->all();
         $validated  = $request->validate([
             'name'  => 'required|max:255'
         ]);
         $category               = new Category;
         $category->name         = $request->name;
-        $category->branch_id    = auth()->user()->id;
+        if (auth()->user()->role == 2) 
+        {
+            $category->branch_id    = auth()->user()->branch_id;
+        }
+        else{
+            $category->branch_id    = auth()->user()->id;
+        }
+
+        if ($request->has('image')) 
+        {
+            $newfilename = time() .'.'. $request->image->getClientOriginalExtension();
+            $request->file('image')->move(public_path("categories"), $newfilename);
+            $category->image = 'categories/'.$newfilename;
+        }
         $category->save();
-        return Auth::user()->role == 1 ? redirect()->route('admin.categories')->with('msg', 'Category Added Successfully'): "sorry";
+        return Auth::user()->role == 1 ? redirect()->route('admin.categories')->with('msg', 'Category Added Successfully'):  redirect()->route('agent.categories')->with('msg', 'Category Added Successfully');
     } 
     public function edit_category($id){
         $category = Category::find($id);
@@ -61,33 +81,50 @@ class MainController extends Controller
         ]);
         $category               = Category::find($id);
         $category->name         = $request->name;
+        if ($request->has('image')) 
+        {
+            $newfilename = time() .'.'. $request->image->getClientOriginalExtension();
+            $request->file('image')->move(public_path("categories"), $newfilename);
+            $category->image = 'categories/'.$newfilename;
+        }
         $category->save();
-        return Auth::user()->role == 1 ? redirect()->route('admin.categories')->with('msg', 'Category Updated Successfully'): "sorry";
+        return Auth::user()->role == 1 ? redirect()->route('admin.categories')->with('msg', 'Category Updated Successfully'): redirect()->route('agent.categories')->with('msg', 'Category Updated Successfully');
     } 
     public function delete_category($id)
     {
         $category = Category::find($id)->delete();
         return Redirect::back()->with('msg', 'Category Deleted Successfully');
     }
-
-    //
     //  Product Funtions
     public function products($id){
         $products = Product::with('images')->where('category_id', $id)->where('parent', null )->get();
+        foreach ($products as $product) {
+            if ($product->type == 'vp')
+            {
+                $product->price = "from ". Product::where('parent', $product->id)
+                                        ->where("type", "sub_product")
+                                        ->orderBy('price', 'ASC')
+                                        ->select('price')
+                                        ->first()->price;
+            }
+            $product->images = ProductImage::where('product_id', $product->id)->select('image')->get();
+        }
         $compacts = compact('products', 'id');
         // return $products;
         return Auth::user()->role == 1 ?  view('admin.product', $compacts): view('agent.product', $compacts);
     }
+
     public function add_product($id){
         $category = Category::find($id);
         $compacts = compact('category');
         return Auth::user()->role == 1 ?  view('admin.addProduct', $compacts): view('agent.addProduct', $compacts);
     }
+
     public function add_new_product(Request $request){
         try{
 
             // return $request->all();
-            $validator = \Validator::make($request->all(), [
+            $validator = Validator::make($request->all(), [
                 // 'product_name'          => 'required|min:1',
                 // 'product_qty'           => 'required|min:1',
                 // 'product_price'         => 'required|min:1',
@@ -103,7 +140,7 @@ class MainController extends Controller
                 ], 400);
             }
             else
-            {
+            {   
                 if($request->type === 'sp'){
                     $product                = new Product;
                     $product->name          = $request->product_name;
@@ -129,6 +166,19 @@ class MainController extends Controller
                             // if (!$status) {
                             //     break;
                             // }
+                        }
+                        $addonss =  json_decode($request->addons);
+                        if($request->has('addons') && count(json_decode($request->addons)) > 0) {
+                            $addons = json_decode($request->addons);
+                            foreach ($addons as  $addon)
+                            {
+                                $new_addon             = new Product;
+                                $new_addon->name       = $addon->addon;
+                                $new_addon->price      = $addon->price;
+                                $new_addon->type       = 'addon';
+                                $new_addon->parent     = $product->id;
+                                $new_addon->save();
+                            }
                         }
                         return response()->json([
                             'status'    => 200,
@@ -171,7 +221,20 @@ class MainController extends Controller
                             $sub_product->category_id   = $request->product_category;
                             $sub_product->quantity      = $varient->qty;
                             $sub_product->parent        = $product->id;
+                            $sub_product->type          = "sub_product";
                             $sub_product->save();
+                        }
+                        if($request->has('addons') && count(json_decode($request->addons)) > 0) {
+                            $addons = json_decode($request->addons);
+                            foreach ($addons as  $addon)
+                            {
+                                $new_addon             = new Product;
+                                $new_addon->name       = $addon->addon;
+                                $new_addon->price      = $addon->price;
+                                $new_addon->type       = 'addon';
+                                $new_addon->parent     = $product->id;
+                                $new_addon->save();
+                            }
                         }
 
                         return response()->json([
@@ -216,6 +279,18 @@ class MainController extends Controller
                             $sub_product->parent        = $product->id;
                             $sub_product->save();
                         }
+                        if($request->has('addons') && count(json_decode($request->addons)) > 0) {
+                            $addons = json_decode($request->addons);
+                            foreach ($addons as  $addon)
+                            {
+                                $new_addon             = new Product;
+                                $new_addon->name       = $addon->addon;
+                                $new_addon->price      = $addon->price;
+                                $new_addon->type       = 'addon';
+                                $new_addon->parent     = $product->id;
+                                $new_addon->save();
+                            }
+                        }
 
                         return response()->json([
                             'status'    => 200,
@@ -233,6 +308,7 @@ class MainController extends Controller
             ], 400);
         }
     }
+    
     public function remove_product($id)
     {
         $product = Product::find($id);
@@ -240,21 +316,32 @@ class MainController extends Controller
         return back()->with('msg', 'deleted successfully');
         // $products = Product::where('parent')
     }
-    //
     //  orders  Funtions
     public function orders(Request $request)
     {
-        $orders = Order::with('users')->with('orderItems')->where('branch_id', auth()->user()->id)->get();
+        if (auth()->user()->role == 2) 
+        {
+            $branch_id    = auth()->user()->branch_id;
+        }
+        else{
+            $branch_id   = auth()->user()->id;
+        }
+        $orders = Order::with('users')->with('orderItems')->where('branch_id', $branch_id)->get();
         $compacts = compact('orders');
         // return $orders;
         return Auth::user()->role == 1 ?  view('admin.orders', $compacts): view('agent.orders', $compacts);
     }
-
-    //
     //  Promo  Funtions
     public function promo(Request $request)
     {
-        $promos = Promo::where('branch_id', auth()->user()->id)->get();
+        if (auth()->user()->role == 2) 
+        {
+            $branch_id    = auth()->user()->branch_id;
+        }
+        else{
+            $branch_id   = auth()->user()->id;
+        }
+        $promos = Promo::where('branch_id', $branch_id)->get();
         $compacts = compact('promos');
         return Auth::user()->role == 1 ?  view('admin.promo', $compacts): view('agent.promo', $compacts);
     }
@@ -275,9 +362,15 @@ class MainController extends Controller
         $promo->code        = $request->code;
         $promo->discount    = $request->discount;
         $promo->expiry      = $request->expiry;
-        $promo->branch_id   = auth()->user()->id;
+        if (auth()->user()->role == 2) 
+        {
+            $promo->branch_id    = auth()->user()->branch_id;
+        }
+        else{
+            $promo->branch_id   = auth()->user()->id;
+        }
         $promo->save();
-        return Auth::user()->role == 1 ? redirect()->route('admin.promo'): "sorry";
+        return Auth::user()->role == 1 ? redirect()->route('admin.promo'): redirect()->route('agent.promo');
     }
     public function edit_promo($id){
 
@@ -300,7 +393,7 @@ class MainController extends Controller
         $promo->discount    = $request->discount;
         $promo->expiry      = $request->expiry;
         $promo->save();
-        return Auth::user()->role == 1 ? redirect()->route('admin.promo'): "sorry";
+        return Auth::user()->role == 1 ? redirect()->route('admin.promo'): redirect()->route('agent.promo');
     }
     public function delete_promo($id)
     {
@@ -310,17 +403,40 @@ class MainController extends Controller
     // sale Funtions
     public function sale()
     {
+        if (auth()->user()->role == 2) 
+        {
+            $branch_id    = auth()->user()->branch_id;
+        }
+        else{
+            $branch_id   = auth()->user()->id;
+        }
         return Auth::user()->role == 1 ?  view('admin.sales'): view('agent.sales');
     }
     // invoice Funtions
     public function invoice()
     {
+        if (auth()->user()->role == 2) 
+        {
+            $branch_id    = auth()->user()->branch_id;
+        }
+        else{
+            $branch_id   = auth()->user()->id;
+        }
         return Auth::user()->role == 1 ?  view('admin.invoices'): view('agent.invoices');
     }
     // customers Funtions
     public function customers()
     {
         $customers = User::where('role', '3')->get();
+        foreach ($customers as $customer) 
+        {
+            $resturant = auth()->user()->id;
+            if (auth()->user()->type == 2) 
+            {
+                $resturant = auth()->user()->branch_id;
+            }
+            $customer->orders = Order::where('branch_id', $resturant)->where('user_id', $customer->id)->count();
+        }
         $compacts = compact('customers');
         return Auth::user()->role == 1 ?
             view('admin.customers', $compacts) :
@@ -341,24 +457,39 @@ class MainController extends Controller
             return Redirect::back()->with('msg', 'Blocked Successfully');
         }
     }
-
-    //
     // Manager Funtions
     public function manager(Request $request)
     {
+        // return $request->all();
         if ($request->has('id')){
-            $manager = User::find($id);
+            $manager = User::find($request->id);
         }
         else{
             $manager = new User;
         }
-        $manager->name  = $request->name;
-        $manager->email = $request->email;
-        $manager->role  = 2;
-        if($request->has('password')){
-            $manager->password = $request->password;
+        $manager->name          = $request->name;
+        $manager->email         = $request->email;
+        $manager->branch_id     = auth()->user()->id;
+        $manager->role          = 2;
+        if($request->has('password'))
+        {
+            $manager->password  = bcrypt($request->password);
         }
-        if($manager->save()){
+        if($manager->save())
+        {
+            if (UserPermition::where('manager_id', $manager->id)->count() > 0) 
+            {
+                $permit  = UserPermition::where('manager_id', $manager->id)->first();
+            }
+            else
+            {
+                $permit = new UserPermition;
+                $permit->manager_id = $manager->id;
+            }
+            if ($request->has('permitions')) {
+                $permit->permition = $request->permitions;
+            }
+            $permit->save();
             return redirect('/admin/managers');
         }
     }
@@ -371,11 +502,12 @@ class MainController extends Controller
     }
     public function edit_manager($id)
     {
-        $manager = User::find($id);
-        $compacts = compact('manager');
+        $manager = User::with('permit')->find($id);
+        // return $manager;
+        $permitions = ManagerPermition::select('id', 'name')->get();
+        $compacts = compact('manager', 'permitions');
         return Auth::user()->role == 1 ?
             view('admin.editManager', $compacts) : '';
-            // view('agent.editManager', $compacts);
     }
     public function del_manager($id)
     {
@@ -399,10 +531,8 @@ class MainController extends Controller
     public function add_manager()
     {
         $permitions = ManagerPermition::select('id', 'name')->get();
-        return Auth::user()->role == 1 ?  view('admin.add-manager', compact('permitions')): '';
+        return Auth::user()->role == 1 ?  view('admin.add-manager', compact('permitions')): view('agent.add-manager', compact('permitions'));
     }
-
-    //
     // Riders funtion
     public function riders()
     {

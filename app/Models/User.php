@@ -45,6 +45,17 @@ class User extends Authenticatable
 
     public function permit()
     {
-        return $this->hasMany(UserPermition::class, 'manager_id');
+        return $this->hasOne(UserPermition::class, 'manager_id');
     }
+
+
+    public function order_count()
+    {
+        return $this->hasMany(Order::class);
+    }
+
+//     public function products()
+//     {
+//         return Products::where('id_buyer', Auth::user()->id)->get();
+//     }
 }

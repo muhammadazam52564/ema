@@ -18,6 +18,7 @@ $i = 1;
                         <th scope="col">#</th>
                         <th scope="col">Nmae</th>
                         <th scope="col">Email</th>
+                        <th scope="col">Phone</th>
                         <th scope="col">Status</th>
                         <th scope="col"> Action </th>
                     </tr>
@@ -28,6 +29,7 @@ $i = 1;
                         <th scope="">{{ $i++ }}</th>
                             <td> {{ $rider->name }} </td>
                             <td> {{ $rider->email }} </td>
+                            <td> {{ $rider->phone }} </td>
                             <td>
                                 @if($rider->status === 1)
                                     Active
@@ -38,20 +40,20 @@ $i = 1;
                                 @endif
                             </td>
                             <td class="d-flex">
-                                <a href="{{ route('admin.orders') }}" class="btn btn-danger ml-2">
+                                <a href="{{ route('admin.orders') }}" class="btn btn-sm btn-danger ml-2">
                                     <i class="fa fa-trash"></i>
                                 </a>
 
                                 @if($rider->status === 1)
-                                    <a href="{{ route('admin.block-rider', ['id'=>$rider->id, 'status'=> 0]) }}" class="btn btn-danger ml-2 custom__btn">
+                                    <a " class="btn btn-sm btn-danger ml-2">
                                         <i class="fa fa-ban"></i> Block
                                     </a>
                                 @elseif($rider->status === 0)
-                                    <a href="{{ route('admin.block-rider', ['id'=>$rider->id, 'status'=> 1]) }}" class="btn btn-success ml-2 custom__btn">
+                                    <a href="{{ route('admin.block-rider', ['id'=>$rider->id, 'status'=> 1]) }}" class="btn btn-sm btn-success ml-2">
                                         <i class="fa fa-ban"></i> Unlock
                                     </a>
                                 @elseif($rider->status === 2)
-                                    <a href="{{ route('admin.approve-rider', $rider->id) }}" class="btn btn-success ml-2 custom__btn">
+                                    <a href="{{ route('admin.approve-rider', $rider->id) }}" class="btn btn-success ml-2 ">
                                         <i class="fa fa-check-circle"></i> Approve
                                     </a>
                                 @endif

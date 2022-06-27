@@ -178,6 +178,9 @@
             .custom__btn{
                 width: 100px;
             }
+            td {
+                vertical-align:middle !important;
+            }
         </style>
     </head>
     <body>
@@ -263,7 +266,13 @@
             //         alert("ok")
             //     }
             // });
-        </script>
+        function previewImage(event, id) {
+            imgInp = event.target;
+            const [file] = imgInp.files
+            $(id).removeClass('d-none')
+            $(id).attr("src", URL.createObjectURL(file));
+        }
+    </script>
         @stack('scripts')
     </body>
 </html>

@@ -16,16 +16,26 @@ class CreateUsersTable extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name')->nullable();
-            $table->string('phone')->nullable();
             $table->string('email')->unique();
-            $table->string('role')->nullable();
+            $table->string('phone')->nullable();
             $table->string('profile_image')->nullable();
-            $table->string('otp')->nullable();
-            $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();
-            $table->integer('status')->default(1);
             $table->unsignedBigInteger('branch_id')->nullable();
             $table->foreign('branch_id')->references('id')->on('users')->onDelete('cascade');
+
+            $table->string('otp')->nullable();
+            $table->string('role')->nullable();
+            $table->integer('status')->default(1);
+            $table->timestamp('email_verified_at')->nullable();
+
+            $table->text('description')->nullable();
+            $table->string('facebook')->nullable();
+            $table->string('instagram')->nullable();
+            $table->string('twitter')->nullable();
+
+            $table->text('lat')->nullable();
+            $table->string('lang')->nullable();
+
             $table->rememberToken();
             $table->timestamps();
         });

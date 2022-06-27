@@ -1,47 +1,26 @@
 <nav id="sidebar" class="sticky-top">
     <div class="sidebar-header">
         <h3>Resturant Logo</h3>
+
     </div>
     <ul class="list-unstyled components">
-        <b>Manager Dashboard</b>
+        <p>Manager Dashboard</p>
         <li class="{{ Request::is('agent/dashboard') ? 'li-active':'' }}">
             <a href="{{ route('agent.dashboard') }}">Dashboard</a>
         </li>
-        <li>
-            <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Menu</a>
-            <ul class="collapse list-unstyled {{ Request::is('agent/categories') || Request::is('agent/add-category') || Request::is('agent/product')  || Request::is('agent/add-product')  ? 'show':'' }}" id="homeSubmenu">
-                <li>
-                    <a
-                        class="{{ Request::is('agent/categories') ? 'li-active':'' }}"
-                        href="{{ route('agent.categories') }}">Menu Categories</a>
-                </li>
-                <li>
-                    <a
-                        class="{{ Request::is('agent/add-category') ? 'li-active':'' }}"
-                        href="{{ route('agent.add-category') }}">Add Categories</a>
-                </li>
-                <li>
-                    <a
-                        class="{{ Request::is('agent/product') ? 'li-active':'' }}"
-                        href="{{ route('agent.product') }}">Menu Products</a>
-                </li>
-                <li>
-                    <a
-                        class="{{ Request::is('agent/add-product') ? 'li-active':'' }}"
-                         href="{{ route('agent.add-product') }}">Add Products</a>
-                </li>
-            </ul>
+        <li class="{{ Request::is('agent/categories') || Request::is('agent/add-category') || Request::is('agent/product/*') || Request::is('agent/add-products/*') ? 'li-active':'' }}">
+            <a href="{{ route('agent.categories') }}">Menu</a>
         </li>
 
         <li class="{{ Request::is('agent/orders') ? 'li-active':'' }}">
             <a href="{{ route('agent.orders') }}">Orders</a>
         </li>
+        <li>
+            <a href="{{ route('agent.promo') }}">Promo</a>
+        </li>
 
         <!-- <li>
-            <a href="{{ route('admin.sales') }}">Sales</a>
-        </li> -->
-        <!-- <li class="{{ Request::is('agent/invoice') ? 'li-active':'' }}">
-            <a href="{{ route('admin.invoice') }}">Invoice</a>
+            <a href="{{ route('agent.invoice') }}">Invoice</a>
         </li> -->
 
         <li>
@@ -49,37 +28,61 @@
             <ul class="collapse list-unstyled {{ Request::is('agent/customers')  ? 'show':'' }}" id="customersMenu">
                 <li>
                     <a
+                        href="{{ route('agent.customers') }}"
                         class="{{ Request::is('agent/customers') ? 'li-active':'' }}"
-                        href="{{ route('agent.customers') }}">Customers List</a>
+                    >
+                        Customers List
+                    </a>
                 </li>
                 <!-- <li>
+                    <a href="{{ route('admin.customers') }}">Customers Review</a>
+                </li> -->
+            </ul>
+        </li>
+        <!-- <li>
+            <a href="#managerMenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Managers</a>
+            <ul class="collapse list-unstyled {{ Request::is('admin/managers') || Request::is('admin/add-manager') ? 'show':'' }}" id="managerMenu">
+                <li>
                     <a
-                        class="{{ Request::is('agent/customers') ? 'li-active':'' }}"
-                        href="{{ route('agent.customers') }}">Customers Review</a>
+                        class="{{ Request::is('admin/managers') ? 'li-active':'' }}"
+                        href="{{ route('admin.managers') }}">Managers List</a>
+                </li>
+                <li>
+                    <a
+                        class="{{ Request::is('admin/add-manager') ? 'li-active':'' }}"
+                        href="{{ route('admin.add-manager') }}">Add New Manager</a>
+                </li>
+            </ul>
+        </li> -->
+
+        <li>
+            <a href="#RidersMenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Riders</a>
+            <ul class="collapse list-unstyled {{ Request::is('agent/riders') ? 'show':'' }}" id="RidersMenu">
+                <li>
+                    <a
+                        href="{{ route('agent.riders') }}"
+                        class="{{ Request::is('agent/riders') ? 'li-active':'' }}"
+                    >
+                        Riders List
+                    </a>
+                </li>
+                <!-- <li>
+                    <a href="{{ route('admin.riders') }}">Add New Rider</a>
                 </li> -->
             </ul>
         </li>
         <li>
-            <a href="#RidersMenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Riders</a>
-            <ul class="collapse list-unstyled {{ Request::is('agent/riders')  ? 'show':'' }}" id="RidersMenu">
+            <a href="#ProfileSettings" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Profile Settings</a>
+            <ul class="collapse list-unstyled {{ Request::is('admin/change-email') || Request::is('admin/change-password')  ? 'show':'' }}"  id="ProfileSettings">
                 <li>
                     <a
-                        class="{{ Request::is('agent/riders') ? 'li-active':'' }}"
-                        href="{{ route('agent.riders') }}">Riders List</a>
-                </li>
-            </ul>
-        </li>
-        <li>
-            <a href="#ProfileSettings" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Settings</a>
-            <ul class="collapse list-unstyled" id="ProfileSettings">
-                <li>
-                    <a href="#">Profile</a>
+                        class="{{ Request::is('agent/change-password') ? 'li-active':'' }}"
+                        href="{{ route('agent.change-password') }}">Change Password</a>
                 </li>
                 <li>
-                    <a href="{{ route('agent.change-password') }}">Change Password</a>
-                </li>
-                <li>
-                    <a href="{{ route('agent.change-email') }}">Change Email</a>
+                    <a
+                        class="{{ Request::is('agent/change-email') ? 'li-active':'' }}"
+                        href="{{ route('agent.change-email') }}">Change Email</a>
                 </li>
             </ul>
         </li>

@@ -1,100 +1,58 @@
 @extends('layouts.agent.app')
+@section('title')
+Managers
+@endsection
 @section('content')
+@php
+ $i =1;
+@endphp
 <div class="container">
-    <div class="row">
-    <div class="col-md-12 py-2 pb-3 d-flex justify-content-between">
-        <h3>Managers</h3>
-        <button class="btn btn-success " data-toggle="modal" data-target="#addManager">
-            <i class="fa fa-plus"></i>
-        </button>
-    </div>
-    <div class="col-md-12 overflow-auto">
+    <div class="row p-3 m-md-4 bg-white shadow rounded">
+        <div class="col-md-12 py-2 pb-3 d-flex justify-content-between">
+            <h3>Managers</h3>
+            <a href="{{ route('admin.add-manager') }}" class="btn btn-success fa fa-plus"> </a>
+        </div>
+        <div class="col-md-12 overflow-auto">
             <table class="table" style="min-width: 700px">
                 <thead class="thead-light">
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">Nmae</th>
                         <th scope="col">Email</th>
-                        <th scope="col">Gender</th>
-                        <th scope="col">DOB</th>
-                        <th scope="col">Country</th>
-                        <th scope="col">Screens</th>
-                        <th scope="col">Images</th>
-                        <th scope="col">Logins</th>
+                        <th scope="col">Manager Status</th>
+                        <th scope="col"> Action </th>
                     </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <th scope="">1</th>
-                        <td>Muhammad</td>
-                        <td>Muhammad@gmail.com</td>
-                        <td>Male</td>
-                        <td>  12<sup>th</sup>March, 2000</td>
-                        <td>Pakistan</td>
-                        <td>3</td>
-                        <td>30</td>
-                        <td>10</td>
+                    @foreach($managers as $manager)
+                    <tr>
+                        <td scope="">{{ $i++ }}</td>
+                        <td>{{ $manager->name }}</td>
+                        <td>{{ $manager->email }}</td>
+                        @if($manager->status === 1)
+                            <td>Active</td>
+                        @else
+                            <td>Blocked</td>
+                        @endif
+                        <td class="d-flex">
+                            <a href="{{ route('admin.edit-manager', $manager->id) }}" class="btn btn-sm btn-primary">
+                                <i class="fa fa-edit"></i>
+                            </a>
+                            <a href="{{ route('admin.del-manager', $manager->id) }}" class="btn btn-sm btn-danger ml-2">
+                                <i class="fa fa-trash"></i>
+                            </a>
+                            @if($manager->status === 1)
+                                <a href="{{ route('admin.block-manager', ['id'=>$manager->id, 'status'=> 0]) }}" class="btn btn-sm btn-danger ml-2 custom__btn">
+                                    <i class="fa fa-ban"></i> Block
+                                </a>
+                            @else
+                                <a href="{{ route('admin.block-manager', ['id'=>$manager->id, 'status'=> 1]) }}" class="btn btn-sm btn-success ml-2  custom__btn">
+                                    <i class="fa fa-ban"></i> Unlock
+                                </a>
+                            @endif
+                        </td>
                     </tr>
-                    <th scope="">1</th>
-                        <td>Muhammad</td>
-                        <td>Muhammad@gmail.com</td>
-                        <td>Male</td>
-                        <td>  12<sup>th</sup>March, 2000</td>
-                        <td>Pakistan</td>
-                        <td>3</td>
-                        <td>30</td>
-                        <td>10</td>
-                    </tr>
-                    <th scope="">1</th>
-                        <td>Muhammad</td>
-                        <td>Muhammad@gmail.com</td>
-                        <td>Male</td>
-                        <td>  12<sup>th</sup>March, 2000</td>
-                        <td>Pakistan</td>
-                        <td>3</td>
-                        <td>30</td>
-                        <td>10</td>
-                    </tr>
-                    <th scope="">1</th>
-                        <td>Muhammad</td>
-                        <td>Muhammad@gmail.com</td>
-                        <td>Male</td>
-                        <td>  12<sup>th</sup>March, 2000</td>
-                        <td>Pakistan</td>
-                        <td>3</td>
-                        <td>30</td>
-                        <td>10</td>
-                    </tr>
-                    <th scope="">1</th>
-                        <td>Muhammad</td>
-                        <td>Muhammad@gmail.com</td>
-                        <td>Male</td>
-                        <td>  12<sup>th</sup>March, 2000</td>
-                        <td>Pakistan</td>
-                        <td>3</td>
-                        <td>30</td>
-                        <td>10</td>
-                    </tr>
-                    <th scope="">1</th>
-                        <td>Muhammad</td>
-                        <td>Muhammad@gmail.com</td>
-                        <td>Male</td>
-                        <td>  12<sup>th</sup>March, 2000</td>
-                        <td>Pakistan</td>
-                        <td>3</td>
-                        <td>30</td>
-                        <td>10</td>
-                    </tr>
-                    <th scope="">1</th>
-                        <td>Muhammad</td>
-                        <td>Muhammad@gmail.com</td>
-                        <td>Male</td>
-                        <td>  12<sup>th</sup>March, 2000</td>
-                        <td>Pakistan</td>
-                        <td>3</td>
-                        <td>30</td>
-                        <td>10</td>
-                    </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>
@@ -122,3 +80,6 @@
   </div>
 </div>
 @endsection
+
+
+

@@ -15,7 +15,9 @@ Customers
                         <th scope="col">#</th>
                         <th scope="col">Nmae</th>
                         <th scope="col">Email</th>
+                        <th scope="col">Phone</th>
                         <th scope="col">Customer Status</th>
+                        <th scope="col">Orders</th>
                         <th scope="col"> Action </th>
                     </tr>
                 </thead>
@@ -25,21 +27,23 @@ Customers
                         <td scope="">1</td>
                         <td>{{ $customer->name }}</td>
                         <td>{{ $customer->email }}</td>
+                        <td>{{ $customer->phone }}</td>
                         @if($customer->status === 1)
                             <td>Active</td>
                         @else
                             <td>Blocked</td>
                         @endif
+                        <td>{{ $customer->orders }}</td>
                         <td class="d-flex">
-                            <a href="{{ route('admin.del-customer', $customer->id ) }}" class="btn btn-danger ml-2">
+                            <a href="{{ route('admin.del-customer', $customer->id ) }}" class="btn btn-sm btn-danger ml-2">
                                 <i class="fa fa-trash"></i>
                             </a>
                             @if($customer->status === 1)
-                                <a href="{{ route('admin.block-customer', ['id'=>$customer->id, 'status'=> 0]) }}" class="btn btn-danger ml-2 custom__btn">
+                                <a href="{{ route('admin.block-customer', ['id'=>$customer->id, 'status'=> 0]) }}" class="btn btn-danger ml-2 btn-sm custom__btn">
                                     <i class="fa fa-ban"></i> Block
                                 </a>
                             @else
-                                <a href="{{ route('admin.block-customer', ['id'=>$customer->id, 'status'=> 1]) }}" class="btn btn-success ml-2 custom__btn">
+                                <a href="{{ route('admin.block-customer', ['id'=>$customer->id, 'status'=> 1]) }}" class="btn btn-success ml-2 btn-sm custom__btn">
                                     <i class="fa fa-ban"></i> Unlock
                                 </a>
                             @endif

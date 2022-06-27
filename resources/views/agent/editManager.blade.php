@@ -1,6 +1,6 @@
-@extends('layouts.admin.app')
-@section('title')
-Edit Manager
+@extends('layouts.agent.app')
+@section('title')   
+    Edit Manager
 @endsection
 @section('content')
 <div class="container">

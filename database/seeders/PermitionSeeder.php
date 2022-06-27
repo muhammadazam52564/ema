@@ -28,5 +28,8 @@ class PermitionSeeder extends Seeder
         ManagerPermition::create([
             'name' => 'riders'
         ]);
+        ManagerPermition::create([
+            'name' => 'sturant stats'
+        ]);
     }
 }

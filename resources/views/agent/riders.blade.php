@@ -1,10 +1,15 @@
 @extends('layouts.agent.app')
+@section('title')
+Riders
+@endsection
 @section('content')
+@php
+$i = 1;
+@endphp
 <div class="container">
-    <div class="row">
+    <div class="row p-3 m-md-4 bg-white shadow rounded">
     <div class="col-md-12 py-2 pb-3 d-flex justify-content-between">
         <h3>Riders</h3>
-        <h6> Here Data Shoing from Customers will change  </h6>
     </div>
         <div class="col-md-12 overflow-auto">
             <table class="table" style="min-width: 700px">
@@ -13,31 +18,52 @@
                         <th scope="col">#</th>
                         <th scope="col">Nmae</th>
                         <th scope="col">Email</th>
+                        <th scope="col">Status</th>
                         <th scope="col"> Action </th>
                     </tr>
                 </thead>
                 <tbody>
+                    @foreach($riders as $rider)
                     <tr>
-                        <th scope="">1</th>
-                            <td>Muhammad</td>
-                            <td>muhammad@gmail.com</td>
+                        <th scope="">{{ $i++ }}</th>
+                            <td> {{ $rider->name }} </td>
+                            <td> {{ $rider->email }} </td>
+                            <td>
+                                @if($rider->status === 1)
+                                    Active
+                                @elseif($rider->status === 2)
+                                    Pending
+                                @else
+                                    Blocked
+                                @endif
+                            </td>
                             <td class="d-flex">
-                                <a href="{{ route('admin.orders') }}" class="btn btn-primary">
-                                    <i class="fa fa-edit"></i>
-                                </a>
-                                <a href="{{ route('admin.orders') }}" class="btn btn-danger ml-2 ">
+                                <a href="{{ route('agent.orders') }}" class="btn btn-sm btn-danger ml-2">
                                     <i class="fa fa-trash"></i>
                                 </a>
-                                <a href="{{ route('admin.orders') }}" class="btn btn-danger ml-2 custom__btn">
-                                    <i class="fa fa-ban"></i> Block
-                                </a>
+
+                                @if($rider->status === 1)
+                                    <a " class="btn btn-sm btn-danger ml-2">
+                                        <i class="fa fa-ban"></i> Block
+                                    </a>
+                                @elseif($rider->status === 0)
+                                    <a href="{{ route('agent.block-rider', ['id'=>$rider->id, 'status'=> 1]) }}" class="btn btn-sm btn-success ml-2">
+                                        <i class="fa fa-ban"></i> Unlock
+                                    </a>
+                                @elseif($rider->status === 2)
+                                    <a href="{{ route('agent.approve-rider', $rider->id) }}" class="btn btn-success ml-2 ">
+                                        <i class="fa fa-check-circle"></i> Approve
+                                    </a>
+                                @endif
                             </td>
                     </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>
     </div>
 </div>
+
 <!-- Modal -->
 <div class="modal fade" id="addManager" tabindex="-1" role="dialog" aria-labelledby="addManagerTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">

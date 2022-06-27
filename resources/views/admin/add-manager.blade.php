@@ -23,6 +23,8 @@ Create Manager
                 <label class="mt-3"> Manager Password </label>
                 <input type="password" name="password" class="form-control" placeholder="Manager Password" />
 
+                <input type="hidden" id="checks" name="permitions" />
+
                 <div class="py-4">
                     <div>
                         <b>
@@ -31,8 +33,14 @@ Create Manager
                     </div>
                     <div class="px-2">
                         @foreach($permitions as $permition)
-                            <input type="checkbox" id="permit__{{ $permition->id }}" value="{{ $permition->id }}">
-                            <label for="box__{{ $permition->id }}">{{ $permition->name }}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <input 
+                                type="checkbox" 
+                                id="permit__{{ $permition->id }}" 
+                                value="{{ $permition->id }}" 
+                                onchange="add_permitions()"
+                                class="permition_check"
+                            >
+                            <label for="box__{{ $permition->id }}" class="mr-2">{{ $permition->name }}</label>
                         @endforeach
                     </div>
                 </div>
@@ -44,3 +52,16 @@ Create Manager
     </div>
 </div>
 @endsection
+@push('scripts')
+    <script>
+        function add_permitions() 
+        {
+            let values = [];
+            $('input[type=checkbox]').each(function () 
+            {
+                this.checked ? values.push($(this).val()) : "";
+            });
+            $('#checks').val(values)
+        }
+    </script>
+@endpush

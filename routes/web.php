@@ -115,38 +115,16 @@ Route::group(['prefix'=> 'admin', 'middleware'=>['isAdmin', 'auth', 'PreventBack
 
     //
     // Profile Settings
-    Route::get('/change-password',  [AdminController::class, 'change_password'] )->name('admin.change-password');
-    Route::post('/change-password', [AdminController::class, 'update_password'] )->name('admin.change-password');
-    Route::get('/change-email',     [AdminController::class, 'change_email']    )->name('admin.change-email');
-    Route::post('/change-email',    [AdminController::class, 'update_email']    )->name('admin.change-email');
+    
+    Route::get('/settings',             [AdminController::class, 'settings']        )->name('admin.settings');
+    Route::post('/save-settings/{id}',  [AdminController::class, 'save_settings']   )->name('admin.save-settings');
+    Route::get('/change-password',      [AdminController::class, 'change_password'] )->name('admin.change-password');
+    Route::post('/change-password',     [AdminController::class, 'update_password'] )->name('admin.change-password');
+    Route::get('/change-admin-email',   [AdminController::class, 'change_email']    )->name('admin.change-admin-email');
+    Route::post('/change-email',        [AdminController::class, 'update_email']    )->name('admin.change-email');
 
 
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -155,50 +133,118 @@ Route::group(['prefix'=> 'agent', 'middleware'=>['isAgent', 'auth', 'PreventBack
     Route::get('/dashboard', [AgentController::class, 'index'])->name('agent.dashboard');
     //
     // Product & Categories
-    //
-    Route::get('/categories', [MainController::class, 'category'])->name('agent.categories');
-    Route::get('/add-category', [MainController::class, 'addCategory'])->name('agent.add-category');
-    Route::get('/product', [MainController::class, 'products'])->name('agent.product');
-    Route::get('/add-product', [MainController::class, 'addProduct'])->name('agent.add-product');
-    //
-    // Managers
-    //
-    // Route::get('/managers', [MainController::class, 'managers'])->name('agent.managers');
-    //
-    // Customers
-    //
-    Route::get('/customers', [MainController::class, 'customers'])->name('agent.customers');
-    Route::get('/del-customer/{id}', [MainController::class, 'del_customer'])->name('agent.del-customer');
-    Route::get('/block-customer/{id}/{status}', [MainController::class, 'block_customer'])->name('agent.block-customer');
+    Route::get('/categories',               [MainController::class, 'category']             )->name('agent.categories');
+    Route::get('/add-category',             [MainController::class, 'add_category']         )->name('agent.add-category');
+    Route::post('/add-category',            [MainController::class, 'add_new_category']     )->name('agent.add-category');
+    Route::get('/edit-category/{id}',       [MainController::class, 'edit_category']        )->name('agent.edit-category');
+    Route::post('/update-category/{id}',    [MainController::class, 'update_category']      )->name('agent.update-category');
+    Route::get('/delete-category/{id}',     [MainController::class, 'delete_category']      )->name('agent.delete-category');
+
+
+    Route::get('/product/{id}',         [MainController::class, 'products']         )->name('agent.product');
+    Route::get('/add-products/{id}',    [MainController::class, 'add_product']      )->name('agent.add-products');
+    Route::post('/add-product',         [MainController::class, 'add_new_product']  )->name('agent.add-product');
+    Route::get('/remove-product/{id}',  [MainController::class, 'remove_product']   )->name('agent.remove-product');
+
     //
     // Resturant Orders
-    //
-    Route::get('/orders', [MainController::class, 'orders'])->name('agent.orders');
+    Route::get('/orders/', [MainController::class, 'orders'])->name('agent.orders');
+
+    // 
+    // promo routes 
+    Route::get('/promo',                [MainController::class, 'promo']                )->name('agent.promo');
+    Route::get('/add-promo',            [MainController::class, 'add_promo']            )->name('agent.add-promo');
+    Route::post('/add-promo',           [MainController::class, 'add_new_promo']        )->name('agent.add-promo');
+    Route::get('/edit-promo/{id}',      [MainController::class, 'edit_promo']           )->name('agent.edit-promo');
+    Route::post('/update-promo/{id}',   [MainController::class, 'update_promo']         )->name('agent.update-promo');
+    Route::get('/delete-promo/{id}',    [MainController::class, 'delete_promo']         )->name('agent.delete-promo');
 
     //
-    // Resturant Sales Matrix
+    // Sales Matrix
+    Route::get('/sales',                [MainController::class, 'sale'] )->name('agent.sales');
+    Route::get('/invoice',              [MainController::class, 'invoice'])->name('agent.invoice');
+    
     //
-    Route::get('/sales', [MainController::class, 'sale'])->name('agent.sales');
+    // Customers
+    Route::get('/customers',                    [MainController::class, 'customers']        )->name('agent.customers');
+    Route::get('//del-customer/{id}',           [MainController::class, 'del_customer']     )->name('agent.del-customer');
+    Route::get('/block-customer/{id}/{status}', [MainController::class, 'block_customer']   )->name('agent.block-customer');
 
-    Route::get('/invoice', [MainController::class, 'invoice'])->name('agent.invoice');
-
+    //
+    // Managers
+    Route::get('/managers',                     [MainController::class, 'managers']     )->name('agent.managers');
+    Route::get('/add-manager',                  [MainController::class, 'add_manager']  )->name('agent.add-manager');
+    Route::post('/add-manager',                 [MainController::class, 'manager']      )->name('agent.add-manager');
+    Route::get('/del-manager/{id}',             [MainController::class, 'del_manager']  )->name('agent.del-manager');
+    Route::get('/edit-manager/{id}',            [MainController::class, 'edit_manager'] )->name('agent.edit-manager');
+    Route::get('/block-manager/{id}/{status}',  [MainController::class, 'block_manager'])->name('agent.block-manager');
 
     //
     // Riders
-    //
-    Route::get('/riders', [MainController::class, 'riders'])->name('agent.riders');
-    Route::get('/del-rider/{id}', [MainController::class, 'del_rider'])->name('agent.del-rider');
-    Route::get('/block-rider/{id}/{status}', [MainController::class, 'block_rider'])->name('agent.block-rider');
-    Route::get('/approve-rider/{id}', [MainController::class, 'approve_rider'])->name('agent.approve-rider');
+    Route::get('/riders',                       [MainController::class, 'riders']       )->name('agent.riders');
+    Route::get('/del-rider/{id}',               [MainController::class, 'del_rider']    )->name('agent.del-rider');
+    Route::get('/block-rider/{id}/{status}',    [MainController::class, 'block_rider']  )->name('agent.block-rider');
+    Route::get('/approve-rider/{id}',           [MainController::class, 'approve_rider'])->name('agent.approve-rider');
+
     //
     // Profile Settings
-    //
-    Route::get('/change-password', [AgentController::class, 'change_password'])->name('agent.change-password');
-    Route::post('/change-password', [AgentController::class, 'update_password'])->name('agent.change-password');
-    Route::get('/change-email', [AgentController::class, 'change_email'])->name('agent.change-email');
-    Route::post('/change-email', [AgentController::class, 'update_email'])->name('agent.change-email');
+    Route::get('/change-password',  [AgentController::class, 'change_password'] )->name('agent.change-password');
+    Route::post('/change-password', [AgentController::class, 'update_password'] )->name('agent.change-password');
+    Route::get('/change-email',     [AgentController::class, 'change_email']    )->name('agent.change-email');
+    Route::post('/change-email',    [AgentController::class, 'update_email']    )->name('admin.change-email');
+
 
 });
+
+// Route::group(['prefix'=> 'agent', 'middleware'=>['isAgent', 'auth', 'PreventBackHistory']], function()
+// {
+//     Route::get('/dashboard', [AgentController::class, 'index'])->name('agent.dashboard');
+//     //
+//     // Product & Categories
+//     //
+//     Route::get('/categories', [MainController::class, 'category'])->name('agent.categories');
+//     Route::get('/add-category', [MainController::class, 'addCategory'])->name('agent.add-category');
+//     Route::get('/product', [MainController::class, 'products'])->name('agent.product');
+//     Route::get('/add-product', [MainController::class, 'addProduct'])->name('agent.add-product');
+//     //
+//     // Managers
+//     //
+//     // Route::get('/managers', [MainController::class, 'managers'])->name('agent.managers');
+//     //
+//     // Customers
+//     //
+//     Route::get('/customers', [MainController::class, 'customers'])->name('agent.customers');
+//     Route::get('/del-customer/{id}', [MainController::class, 'del_customer'])->name('agent.del-customer');
+//     Route::get('/block-customer/{id}/{status}', [MainController::class, 'block_customer'])->name('agent.block-customer');
+//     //
+//     // Resturant Orders
+//     //
+//     Route::get('/orders', [MainController::class, 'orders'])->name('agent.orders');
+
+//     //
+//     // Resturant Sales Matrix
+//     //
+//     Route::get('/sales', [MainController::class, 'sale'])->name('agent.sales');
+
+//     Route::get('/invoice', [MainController::class, 'invoice'])->name('agent.invoice');
+
+
+//     //
+//     // Riders
+//     //
+//     Route::get('/riders', [MainController::class, 'riders'])->name('agent.riders');
+//     Route::get('/del-rider/{id}', [MainController::class, 'del_rider'])->name('agent.del-rider');
+//     Route::get('/block-rider/{id}/{status}', [MainController::class, 'block_rider'])->name('agent.block-rider');
+//     Route::get('/approve-rider/{id}', [MainController::class, 'approve_rider'])->name('agent.approve-rider');
+//     //
+//     // Profile Settings
+//     //
+//     Route::get('/change-password', [AgentController::class, 'change_password'])->name('agent.change-password');
+//     Route::post('/change-password', [AgentController::class, 'update_password'])->name('agent.change-password');
+//     Route::get('/change-email', [AgentController::class, 'change_email'])->name('agent.change-email');
+//     Route::post('/change-email', [AgentController::class, 'update_email'])->name('agent.change-email');
+
+// });
 
 
 

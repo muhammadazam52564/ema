@@ -21,5 +21,16 @@ Route::get('/address/{id}',             [AuthController::class, 'address']);
 Route::get('/categories',               [MainController::class, 'categories']);
 Route::get('/product/{id}',             [MainController::class, 'product']);
 
-Route::post('/order',                   [MainController::class, 'order']);
+Route::post('/order',                   [MainController::class, 'add_order']);
+Route::get('/branches',                 [MainController::class, 'branches']);
 
+Route::post('/like',                    [MainController::class, 'like_product']);
+Route::post('/unlike',                  [MainController::class, 'unlike_product']);
+Route::get('/favorities/{id}',          [MainController::class, 'favorite_list']);
+
+Route::get('/vouchers',                 [MainController::class, 'vouchers']);
+
+
+
+Route::get('/order-history/{user_id}',           [MainController::class, 'orders']);
+Route::get('/order/{id}',              [MainController::class, 'order']);

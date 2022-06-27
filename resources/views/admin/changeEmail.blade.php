@@ -16,7 +16,7 @@ Settings Email
                 <label class="mt-3"> Account Password </label>
                 <input type="password" name="password" class="form-control" placeholder="Account password" />
                 <div class="mt-4  w-100 d-flex justify-content-end">
-                    <button class="btn btn-primary ">Change Email Address</button>
+                    <button class="btn btn-primary ">Update Email Address</button>
                 </div>
             </form>
         </div>

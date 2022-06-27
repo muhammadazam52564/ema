@@ -1,22 +1,22 @@
 @extends('layouts.agent.app')
 @section('title')
-Create Category
+Edit Category
 @endsection
 @section('content')
 <div class="container">
-    <div class="row p-3 mb-4 bg-white shadow m-md-4">
-    <div class="col-md-12 py-2 pb-3 d-flex justify-content-between">
-        <h3>Add New Category</h3>
-        <a href="{{ route('admin.categories') }}" class="btn btn-success" >
-            All Categories
-        </a>
-    </div>
-        <form class="form-group pt-3 w-100" method="post" action="{{ route('agent.add-category') }}" enctype="multipart/form-data" >
+    <div class="row p-3 m-md-4 bg-white shadow rounded">
+        <div class="col-md-12 py-2 pb-3 d-flex justify-content-between">
+            <h3>Edit Category</h3>
+            <a href="{{ route('admin.categories') }}" class="btn btn-success" >
+                All Categories
+            </a>
+        </div>
+        <form class="form-group pt-3 w-100" method="post" action="{{ route('agent.update-category', $category->id) }}" enctype="multipart/form-data" >
             <div class="col-md-12 overflow-auto">
                 @csrf
                 <div class="form-group">
                     <label>Category name</label>
-                    <input type="text" name="name" class="form-control" placeholder="category name" />
+                    <input type="text" name="name" class="form-control" placeholder="category name" value="{{ $category->name }}" />
                 </div>
             </div>
             <div class="col-md-12 overflow-auto">
@@ -24,12 +24,12 @@ Create Category
                     <div class="col-md-6 py-5 d-flex justify-content-center">
                         <div class="form-group">
                             <label for="catimage" class="btn btn-lg btn-primary ">Chose Category Image</label>
-                            <input type="file" id="catimage" name="image" class="d-none"  onchange="previewImage(event, '#catimage_preview')" />
+                            <input type="file" id="catimage" name="image" class="d-none"  onchange="previewImage(event, '#edit_catimage_preview')" />
                         </div>
                     </div>
                     <div class="col-md-6 pt-2 d-flex justify-content-center">
                         <div class="form-group">
-                            <img src="" class="d-none" id="catimage_preview" style="max-width: 170px; max-height: 120px;" />
+                            <img src="../../{{ $category->image }}" class="" id="edit_catimage_preview" style="max-width: 170px; max-height: 120px;" />
                         </div>
                     </div>
                 </div>

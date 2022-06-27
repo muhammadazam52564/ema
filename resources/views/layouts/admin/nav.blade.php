@@ -1,6 +1,6 @@
 <nav id="sidebar" class="sticky-top">
     <div class="sidebar-header">
-        <h3>Resturant Logo</h3>
+        <h3>Restaurant Logo</h3>
 
     </div>
     <ul class="list-unstyled components">
@@ -73,17 +73,24 @@
         </li>
         <li>
             <a href="#ProfileSettings" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Profile Settings</a>
-            <ul class="collapse list-unstyled {{ Request::is('admin/change-email') || Request::is('admin/change-password')  ? 'show':'' }}"  id="ProfileSettings">
+            <ul class="collapse list-unstyled {{ Request::is('admin/settings') || Request::is('admin/change-email') || Request::is('admin/change-password')  ? 'show':'' }}"  id="ProfileSettings">
+                <li>
+                    <a
+                        class="{{ Request::is('admin/settings') ? 'li-active':'' }}"
+                        href="{{ route('admin.settings') }}">Profile Settings
+                    </a>
+                </li>
                 <li>
                     <a
                         class="{{ Request::is('admin/change-password') ? 'li-active':'' }}"
-                        href="{{ route('admin.change-password') }}">Change Password</a>
+                        href="{{ route('admin.change-password') }}">Change Password
+                    </a>
                 </li>
-                <li>
+                <!-- <li>
                     <a
-                        class="{{ Request::is('admin/change-email') ? 'li-active':'' }}"
-                        href="{{ route('admin.change-email') }}">Change Email</a>
-                </li>
+                        class="{{ Request::is('admin/change-admin-email') ? 'li-active':'' }}"
+                        href="{{ route('admin.change-admin-email') }}">Change Email </a>
+                </li> -->
             </ul>
         </li>
     </ul>

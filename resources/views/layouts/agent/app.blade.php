@@ -247,15 +247,12 @@
 
             });
 
-            // $.ajax({
-            //     type: "GET",
-            //     url: "https://jsonplaceholder.typicode.com/posts/1",
-            //     cache: false,
-            //     success: function(data){
-            //         console.log(data);
-            //         alert("ok")
-            //     }
-            // });
+            function previewImage(event, id) {
+                imgInp = event.target;
+                const [file] = imgInp.files
+                $(id).removeClass('d-none')
+                $(id).attr("src", URL.createObjectURL(file));
+            }
         </script>
         @stack('scripts')
     </body>

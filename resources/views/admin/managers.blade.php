@@ -19,6 +19,7 @@ Managers
                         <th scope="col">#</th>
                         <th scope="col">Nmae</th>
                         <th scope="col">Email</th>
+                        <th scope="col">Phone</th>
                         <th scope="col">Manager Status</th>
                         <th scope="col"> Action </th>
                     </tr>
@@ -29,24 +30,25 @@ Managers
                         <td scope="">{{ $i++ }}</td>
                         <td>{{ $manager->name }}</td>
                         <td>{{ $manager->email }}</td>
+                        <td>{{ $manager->phone }}</td>
                         @if($manager->status === 1)
                             <td>Active</td>
                         @else
                             <td>Blocked</td>
                         @endif
                         <td class="d-flex">
-                            <a href="{{ route('admin.edit-manager', $manager->id) }}" class="btn btn-primary">
+                            <a href="{{ route('admin.edit-manager', $manager->id) }}" class="btn btn-sm btn-primary">
                                 <i class="fa fa-edit"></i>
                             </a>
-                            <a href="{{ route('admin.del-manager', $manager->id) }}" class="btn btn-danger ml-2">
+                            <a href="{{ route('admin.del-manager', $manager->id) }}" class="btn btn-sm btn-danger ml-2">
                                 <i class="fa fa-trash"></i>
                             </a>
                             @if($manager->status === 1)
-                                <a href="{{ route('admin.block-manager', ['id'=>$manager->id, 'status'=> 0]) }}" class="btn btn-danger ml-2 custom__btn">
+                                <a href="{{ route('admin.block-manager', ['id'=>$manager->id, 'status'=> 0]) }}" class="btn btn-sm btn-danger ml-2 custom__btn">
                                     <i class="fa fa-ban"></i> Block
                                 </a>
                             @else
-                                <a href="{{ route('admin.block-manager', ['id'=>$manager->id, 'status'=> 1]) }}" class="btn btn-success ml-2  custom__btn">
+                                <a href="{{ route('admin.block-manager', ['id'=>$manager->id, 'status'=> 1]) }}" class="btn btn-sm btn-success ml-2  custom__btn">
                                     <i class="fa fa-ban"></i> Unlock
                                 </a>
                             @endif

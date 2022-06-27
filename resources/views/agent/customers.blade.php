@@ -1,7 +1,10 @@
 @extends('layouts.agent.app')
+@section('title')
+Customers
+@endsection
 @section('content')
 <div class="container">
-    <div class="row">
+    <div class="row p-3 m-md-4 bg-white shadow rounded">
     <div class="col-md-12 py-2 pb-3 d-flex justify-content-between">
         <h3>Customers</h3>
     </div>
@@ -28,15 +31,15 @@
                             <td>Blocked</td>
                         @endif
                         <td class="d-flex">
-                            <a href="{{ route('agent.del-customer', $customer->id ) }}" class="btn btn-danger ml-2">
+                            <a href="{{ route('agent.del-customer', $customer->id ) }}" class="btn btn-sm btn-danger ml-2">
                                 <i class="fa fa-trash"></i>
                             </a>
                             @if($customer->status === 1)
-                                <a href="{{ route('agent.block-customer', ['id'=>$customer->id, 'status'=> 0]) }}" class="btn btn-danger ml-2 custom__btn">
+                                <a href="{{ route('agent.block-customer', ['id'=>$customer->id, 'status'=> 0]) }}" class="btn btn-sm btn-danger ml-2 ">
                                     <i class="fa fa-ban"></i> Block
                                 </a>
                             @else
-                                <a href="{{ route('agent.block-customer', ['id'=>$customer->id, 'status'=> 1]) }}" class="btn btn-success ml-2 custom__btn">
+                            <a href="{{ route('agent.block-customer', ['id'=>$customer->id, 'status'=> 1]) }}" class="btn btn-sm btn-success ml-2 ">
                                     <i class="fa fa-ban"></i> Unlock
                                 </a>
                             @endif
@@ -70,4 +73,3 @@
   </div>
 </div>
 @endsection
-

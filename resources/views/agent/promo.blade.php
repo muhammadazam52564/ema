@@ -1,6 +1,6 @@
-@extends('layouts.admin.app')
+@extends('layouts.agent.app')
 @section('title')
-  Categories
+  Promo
 @endsection
 @section('content')
 @php
@@ -9,43 +9,38 @@
 <div class="container">
     <div class="row p-3 m-md-4 bg-white shadow">
     <div class="col-md-12 py-2 pb-3 d-flex justify-content-between">
-        <h3>Categories</h3>
-        <a href="{{ route('admin.add-category') }}" class="btn btn-success" >
+        <h3>Promo</h3>
+        <a href="{{ route('agent.add-promo') }}" class="btn btn-success" >
             <i class="fa fa-plus"></i>
         </a>
     </div>
         <div class="col-md-12 overflow-auto">
-            <table class="table" id="cat_table" style="min-width: 700px">
+            <table class="table" style="min-width: 700px">
                 <thead class="thead-light">
                     <tr>
-                      <th>#</th>
-                      <th>Category ID</th>
-                      <th>Category Name</th>
-                      <th>Image</th>
-                      <th>Action</th>
+                    <th scope="col">#</th>
+                    <th scope="col">Promo Name</th>
+                    <th scope="col">Promo Discount (%)</th>
+                    <th scope="col">Promo Code</th>
+                    <th scope="col">Promo expiry</th>
+                    <th scope="col">Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($categories as $category)
+                    @foreach($promos as $promo)
                     <tr>
-                        <td scope="row">{{ $i++ }}</td>
-                        <td>{{ $category->id }}</td>
-                        <td>{{ $category->name }}</td>
-                        <td>
-                          <img src="../{{ $category->image }}" style="max-width:120px; max-height:80px;"/> 
-                        </td>
-                        <td>
-                          <div class="d-flex">
-                            <a href="{{ route('admin.product', $category->id) }}" class="btn btn-sm btn-success mr-2">
-                              <i class="fa fa-list"> Products</i>
-                            </a>
-                            <a href="{{ route('admin.edit-category',  $category->id) }}" class="btn btn-sm btn-primary">
+                        <td>{{ $i++ }}</td>
+                        <td>{{ $promo->name }}</td>
+                        <td>{{ $promo->discount }}</td>
+                        <td>{{ $promo->code }}</td>
+                        <td>{{ $promo->expiry }}</td>
+                        <td class="d-flex">
+                            <a href="{{ route('agent.edit-promo',  $promo->id) }}" class="btn btn-sm btn-primary">
                               <i class="fa fa-edit"></i>
                             </a>
-                            <a href="{{ route('admin.delete-category', $category->id) }}" class="btn btn-sm btn-danger ml-2">
+                            <a href="{{ route('agent.delete-promo', $promo->id) }}" class="btn btn-sm btn-danger ml-2">
                               <i class="fa fa-trash"></i>
                             </a>
-                          </div>
                         </td>
                     </tr>
                     @endforeach

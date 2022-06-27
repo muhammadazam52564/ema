@@ -1,12 +1,15 @@
 @extends('layouts.agent.app')
+@section('title')
+Settings Email
+@endsection
 @section('content')
 <div class="container">
-    <div class="row">
-    <div class="col-md-12 py-2 pb-3 d-flex justify-content-between">
-        <h3>Change Admin Email Address</h3>
-    </div>
+    <div class="row p-md-5 bg-white shadow rounded m-md-4">
+        <div class="col-md-12 py-2 pb-3 d-flex justify-content-between">
+            <h3>Change Manager Email Address</h3>
+        </div>
         <div class="col-md-12 overflow-auto">
-            <form class="form-group pt-3" method="POST" action="{{ route('agent.change-email') }}">
+            <form class="form-group p-3" method="POST" action="{{ route('agent.change-email') }}">
                 @csrf
                 <label class="mt-3"> Email Address </label>
                 <input type="email" name="email" class="form-control" placeholder="email address" />

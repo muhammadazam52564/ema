@@ -5,11 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class OrderItem extends Model
+class Like extends Model
 {
     use HasFactory;
-    public function product()
-    {
-        return $this->hasOne(Product::class, 'order_id');
-    }
 }
