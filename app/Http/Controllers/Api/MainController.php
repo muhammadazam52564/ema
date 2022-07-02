@@ -91,7 +91,7 @@ class MainController extends Controller
                                         ->select('id', 'name', 'price')
                                         ->get();
             }
-            unset($product->type);
+            // unset($product->type);
             return response()->json([
                 'status'    => true,
                 'message'   => 'Product details',
