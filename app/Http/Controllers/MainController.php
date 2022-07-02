@@ -277,6 +277,7 @@ class MainController extends Controller
                             $sub_product->quantity      = $subproduct->qty;
                             $sub_product->category_id   = $request->product_category;
                             $sub_product->parent        = $product->id;
+                            $sub_product->type          = "sub_product";
                             $sub_product->save();
                         }
                         if($request->has('addons') && count(json_decode($request->addons)) > 0) {
