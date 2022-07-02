@@ -17,6 +17,7 @@ Route::post('/update_profile',          [AuthController::class, 'update_profile'
 Route::post('/change_password',         [AuthController::class, 'change_password']);
 Route::post('/add-address',             [AuthController::class, 'add_address']);
 Route::get('/address/{id}',             [AuthController::class, 'address']);
+Route::get('/delete-address/{id}',      [AuthController::class, 'delete_address']);
 
 Route::get('/categories',               [MainController::class, 'categories']);
 Route::get('/product/{id}',             [MainController::class, 'product']);

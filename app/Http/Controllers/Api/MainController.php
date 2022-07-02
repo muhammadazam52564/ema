@@ -83,9 +83,11 @@ class MainController extends Controller
             if ($product->type == 'gp')
             {
                 $product->sub_products = Product::where('parent', $product->id)
+                                        ->where("type", "sub_product")
                                         ->select('id', 'name', 'quantity')
                                         ->get();
                 $product->addons = Product::where('parent', $product->id)
+                                        ->where("type", "addon")
                                         ->select('id', 'name', 'price')
                                         ->get();
             }

@@ -491,6 +491,27 @@ class AuthController extends Controller
         }
     }
 
+    public function delete_address($id)
+    {
+        try
+        {
+            $address = Address::find($id)->delete();
+            return response()->json([
+                'status'    => true,
+                'message'   => 'deleted address successfully',
+                'error'     => null,
+            ], 200);
+
+        } catch(\Exception $e)
+        {
+            return response()->json([
+                'status'    => false,
+                'error'     => $e->getMessage(),
+                'data'      => null
+            ], 400);
+        }
+    }
+
     public function signout(Request $request)
     {
         try{
