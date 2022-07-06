@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -58,6 +57,8 @@ class MainController extends Controller
             $product = Product::with('images')->where('id', $id)->select('id', 'name', 'quantity', 'price', 'description', 'type')->first();
             if ($product->type == 'sp')
             {
+                $product->sub_products = [];
+
                 $product->adons = Product::where('parent', $product->id)->where('type', 'addon')
                                 ->select('id', 'name', 'price')
                                 ->get();
