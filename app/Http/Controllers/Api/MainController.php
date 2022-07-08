@@ -59,7 +59,7 @@ class MainController extends Controller
             {
                 $product->sub_products = [];
 
-                $product->adons = Product::where('parent', $product->id)->where('type', 'addon')
+                $product->addons = Product::where('parent', $product->id)->where('type', 'addon')
                                 ->select('id', 'name', 'price')
                                 ->get();
             }
@@ -76,7 +76,7 @@ class MainController extends Controller
                                             ->select('id', 'name', 'quantity', 'price')
                                             ->get();
 
-                $product->adons = Product::where('parent', $product->id)
+                $product->addons = Product::where('parent', $product->id)
                                         ->where("type", "addon")
                                         ->select('id', 'name', 'price')
                                         ->get();
